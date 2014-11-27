@@ -49,32 +49,38 @@ namespace YearChart
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			
-			//
-			// TODO: Add constructor code after the InitializeComponent() call.
-			//
-            printDocument.DefaultPageSettings.Landscape = true;
-			printDocument.PrintPage += new PrintPageEventHandler(this.printDocument_PrintPage);
+
+			printDocument.DefaultPageSettings.Landscape = true;
 			printDocument.DefaultPageSettings.Margins = new Margins( 50, 50, 50, 50 );
 		}
 
-		private void InitialisePrintSettings()
+		protected override void OnResize( EventArgs ev )
 		{
-			//System.Threading.Thread.CurrentThread.CurrentCulture
+			base.OnResize( ev );
+			this.toolStripContainer.ContentPanel.Invalidate( ClientRectangle );
 		}
-        protected override void OnResize( EventArgs ev ) 
-        {
-            base.OnResize( ev );
-            this.toolStripContainer.ContentPanel.Invalidate( ClientRectangle );
-        }
 
-        private void doOptionsDialog()
-        {
+		private void doOptionsDialog()
+		{
 			YearChartOptionsForm dialog = new YearChartOptionsForm();
+			
 			dialog.ChartTitle = yearChartPanel.Title;
-			dialog.Year = yearChartPanel.Year;
+			dialog.IsWholeYear = yearChartPanel.IsWholeYear;
+			if( yearChartPanel.IsWholeYear )
+			{
+				dialog.Year = yearChartPanel.Year;
+			}
+			else
+			{
+				dialog.StartDate = yearChartPanel.StartDate;
+				dialog.EndDate = yearChartPanel.EndDate;
+			}
+			
 			dialog.ExtraRows = yearChartPanel.ExtraRows;
+			dialog.ExtraColumns = yearChartPanel.ExtraColumns;
 			dialog.WeekStartDay  = yearChartPanel.WeekStartDay;
+			dialog.Abbreviate = yearChartPanel.Abbreviate;
+			dialog.HeadingColor = yearChartPanel.HeadingColor;
 
 			DialogResult result = dialog.ShowDialog( this );
 			if( result == DialogResult.OK )
@@ -82,13 +88,182 @@ namespace YearChart
 				yearChartPanel.Title		= dialog.ChartTitle;
 				printDocument.DocumentName = dialog.ChartTitle;
 				
-				yearChartPanel.Year			= dialog.Year;
+				if( dialog.IsWholeYear )
+				{
+					yearChartPanel.Year = dialog.Year;
+				}
+				else
+				{
+					yearChartPanel.StartDate = dialog.StartDate;
+					yearChartPanel.EndDate = dialog.EndDate;
+				}
+				
 				yearChartPanel.ExtraRows	= dialog.ExtraRows;
+				yearChartPanel.ExtraColumns = dialog.ExtraColumns;
 				yearChartPanel.WeekStartDay	= dialog.WeekStartDay;
+				yearChartPanel.Abbreviate 	= dialog.Abbreviate;
 
 				yearChartPanel.Calculate();
 				this.Invalidate();
 			}
-        }
+		}
+
+		void PageSetupToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			pageSetupDialog.ShowDialog();
+		}
+
+		void PrintPreviewToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			try
+			{
+				printPreviewDialog.ShowDialog();
+			}
+			catch( Exception ex )
+			{
+				MessageBox.Show( "Failed to print Year Chart:\n" + ex.Message, "Year Chart", MessageBoxButtons.OK, MessageBoxIcon.Error );
+			}
+		}
+
+		private void printDocument_PrintPage( object sender, PrintPageEventArgs ev )
+		{
+			Debug.WriteLine( "PageBounds    " + ev.PageBounds );
+			Debug.WriteLine( "PrintableArea " + ev.PageSettings.PrintableArea );
+			Debug.WriteLine( "MarginBounds  " + ev.MarginBounds );
+			Debug.WriteLine( "Hard Margin   " + ev.PageSettings.HardMarginX + ", " + ev.PageSettings.HardMarginY + " Landscape? " + ev.PageSettings.Landscape );
+			Debug.WriteLine("");
+
+			bool changedMargins = false;
+			
+			int Left	= ev.MarginBounds.Left;
+			int Top		= ev.MarginBounds.Top;
+			int Right	= ev.MarginBounds.Right;
+			int Bottom	= ev.MarginBounds.Bottom;
+
+			int MinLeft;
+			int MinTop;
+			int MaxRight;
+			int MaxBottom;
+
+			if( ev.PageSettings.Landscape )
+			{
+				MinLeft		= (int) (ev.PageSettings.PrintableArea.Top + 0.5);
+				MinTop		= (int) (ev.PageSettings.PrintableArea.Left + 0.5);
+				MaxRight	= (int) (ev.PageSettings.PrintableArea.Bottom - 0.5);
+				MaxBottom	= (int) (ev.PageSettings.PrintableArea.Right - 0.5);
+			}
+			else
+			{
+				MinLeft		= (int) (ev.PageSettings.PrintableArea.Left + 0.5);
+				MinTop		= (int) (ev.PageSettings.PrintableArea.Top + 0.5);
+				MaxRight	= (int) (ev.PageSettings.PrintableArea.Right - 0.5);
+				MaxBottom	= (int) (ev.PageSettings.PrintableArea.Bottom - 0.5);
+			}
+
+			Debug.WriteLine( "Min Margins: Left " + MinLeft + ", Top " + MinTop + ", Right " + (ev.PageBounds.Right - MaxRight) + ", Bottom " + (ev.PageBounds.Bottom - MaxBottom) );
+
+			if( Left < MinLeft )
+			{
+				changedMargins = true;
+				Left = MinLeft;
+			}
+
+			if( Top < MinTop )
+			{
+				changedMargins = true;
+				Top = MinTop;
+			}
+
+			if( Right > MaxRight )
+			{
+				changedMargins = true;
+				Right = MaxRight;
+			}
+
+			if( Bottom > MaxBottom )
+			{
+				changedMargins = true;
+				Bottom = MaxBottom;
+			}
+
+			if( changedMargins )
+			{
+				printDocument.DefaultPageSettings.Margins = new Margins( Left, (ev.PageBounds.Right - Right), Top, (ev.PageBounds.Bottom - Bottom) );
+				Debug.WriteLine( "Adjusted Margins " + printDocument.DefaultPageSettings.Margins );
+				MessageBox.Show( "Page Margins set outside printable area - adjusted to fit.", "Kajabity Year Chart" );
+			}
+
+			Rectangle MarginBounds = new Rectangle( Left, Top, (Right - Left), (Bottom - Top) );
+			
+			bool preview = printDocument.PrintController.IsPreview;
+			if( !preview )
+			{
+				MarginBounds.Offset( - (int) ev.PageSettings.HardMarginX, - (int) ev.PageSettings.HardMarginY );
+			}
+
+			Debug.WriteLine( "MarginBounds (2) " + MarginBounds + ": Changed? " + changedMargins + ": Preview? " + preview );
+			Debug.WriteLine("");
+
+			yearChartPanel.Draw( ev.Graphics, MarginBounds );
+
+//			Pen penMargin = new Pen( Color.Red );
+//			ev.Graphics.DrawRectangle( penMargin, MarginBounds );
+//			Rectangle printableRect = new Rectangle( MinLeft, MinTop, (MaxRight - MinLeft), (MaxBottom - MinTop) );
+//			ev.Graphics.DrawRectangle( penMargin, printableRect );
+
+			ev.HasMorePages = false;
+		}
+
+		void PrintToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			if( printDialog.ShowDialog() == DialogResult.OK )
+			{
+				try
+				{
+					printDocument.Print();
+				}
+				catch( Exception ex )
+				{
+					MessageBox.Show( "Failed to print Year Chart:\n" + ex.Message, "Year Chart", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				}
+			}
+		}
+
+		void ExitToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			Close();
+		}
+
+		void OptionsToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			doOptionsDialog();
+		}
+
+		void ContentsToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			Help.ShowHelp( this, "YearChart.chm", HelpNavigator.TableOfContents );
+		}
+		
+		void IndexToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			Help.ShowHelpIndex( this, "YearChart.chm" );
+		}
+		
+		void SearchToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			Help.ShowHelp( this, "YearChart.chm", HelpNavigator.Find );
+		}
+		
+		void AboutToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			AboutForm dialog = new AboutForm();
+
+			DialogResult result = dialog.ShowDialog( this );
+		}
+		
+		void YearChartPanelDoubleClick(object sender, EventArgs e)
+		{
+			doOptionsDialog();
+		}
 	}
 }

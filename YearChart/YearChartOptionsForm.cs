@@ -28,6 +28,8 @@ using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
 
+using YearChart.Model;
+
 namespace YearChart
 {
 	/// <summary>
@@ -60,31 +62,127 @@ namespace YearChart
 			}
 		}
 
-		public ArrayList extraRowStrings = new ArrayList();
-		
-		public string[] ExtraRows
+		/// <summary>
+		/// This method tests if the date range represents a whole year - 1st January to 31st December.
+		/// Can be used to determine whether to select the 'Year' or 'Date Range' radio button.
+		/// </summary>
+		public bool IsWholeYear
 		{
 			get
 			{
-				return (string []) extraRowStrings.ToArray( typeof (string) );
-					
-//				string []extra = new String[ listExtraRows.Items.Count ];
-//				for( int i = 0; i < extra.Length; i++ )
-//				{
-//					extra[ i ] = (string) listExtraRows.Items[ i ];
-//				}
-//
-//				return extra;
+				return radioWholeYear.Checked;
+			}
+			set
+			{
+				radioWholeYear.Checked = value;
+				radioDateRange.Checked = !value;
+			}
+		}
+
+		public DateTime StartDate
+		{
+			get
+			{
+				return dateFrom.Value;
+			}
+			set
+			{
+				dateFrom.Value = value;
+			}
+		}
+
+		public DateTime EndDate
+		{
+			get
+			{
+				return dateTo.Value;
+			}
+			set
+			{
+				dateTo.Value = value;
+			}
+		}
+
+		public bool Abbreviate
+		{
+			get
+			{
+				return checkAbbreviate.Checked;
+			}
+			set
+			{
+				checkAbbreviate.Checked = value;
+			}
+		}
+
+		public ArrayList extraRows = new ArrayList();
+
+		public YearChartCell[] ExtraRows
+		{
+			get
+			{
+				YearChartCell []extra = new YearChartCell[ listExtraRows.Items.Count ];
+				for( int i = 0; i < extra.Length; i++ )
+				{
+					extra[ i ] = new HeadingCell( (string) listExtraRows.Items[ i ] ) ;
+				}
+
+				return extra;
 			}
 			set
 			{
 				listExtraRows.Items.Clear();
 				
-				for( int i = 0; i < value.Length; i++ )
+				if( value != null )
 				{
-					addLabel( value[ i ] );
+					for( int i = 0; i < value.Length; i++ )
+					{
+						extraRows.Add( value[ i ].text );
+						listExtraRows.Items.Add( value[ i ].text );
+					}
 				}
+
+				enableExtraRowButtons();
 			}
+		}
+
+		public ArrayList extraColumns = new ArrayList();
+
+		public YearChartCell[] ExtraColumns
+		{
+			get
+			{
+				YearChartCell []extra = new YearChartCell[ listExtraColumns.Items.Count ];
+				for( int i = 0; i < extra.Length; i++ )
+				{
+					extra[ i ] = new HeadingCell( (string) listExtraColumns.Items[ i ] ) ;
+				}
+
+				return extra;
+			}
+			set
+			{
+				listExtraColumns.Items.Clear();
+				
+				if( value != null )
+				{
+					for( int i = 0; i < value.Length; i++ )
+					{
+						extraColumns.Add( value[ i ].text );
+						listExtraColumns.Items.Add( value[ i ].text );
+					}
+				}
+				
+				enableExtraColumnButtons();
+			}
+		}
+		
+		private Color m_colorHeading = Color.Yellow;
+		
+		public Color HeadingColor
+		{
+			get { return m_colorHeading; }
+			set { m_colorHeading = value; Invalidate(); }
 		}
 
 		public DayOfWeek WeekStartDay
@@ -106,10 +204,6 @@ namespace YearChart
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			
-			//
-			// TODO: Add constructor code after the InitializeComponent() call.
-			//
 		}
 	}
 }

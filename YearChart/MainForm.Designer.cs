@@ -114,9 +114,9 @@ namespace YearChart
 			// 
 			this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			                              	this.fileToolStripMenuItem,
-			                              	this.toolsToolStripMenuItem,
-			                              	this.helpToolStripMenuItem});
+									this.fileToolStripMenuItem,
+									this.toolsToolStripMenuItem,
+									this.helpToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
 			this.menuStrip.Size = new System.Drawing.Size(592, 24);
@@ -126,11 +126,11 @@ namespace YearChart
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			                                                  	this.pageSetupToolStripMenuItem,
-			                                                  	this.printPreviewToolStripMenuItem,
-			                                                  	this.printToolStripMenuItem,
-			                                                  	this.toolStripSeparator2,
-			                                                  	this.exitToolStripMenuItem});
+									this.pageSetupToolStripMenuItem,
+									this.printPreviewToolStripMenuItem,
+									this.printToolStripMenuItem,
+									this.toolStripSeparator2,
+									this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
 			this.fileToolStripMenuItem.Text = "&File";
@@ -180,7 +180,7 @@ namespace YearChart
 			// toolsToolStripMenuItem
 			// 
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			                                                   	this.optionsToolStripMenuItem});
+									this.optionsToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
 			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.toolsToolStripMenuItem.Text = "&Tools";
@@ -188,7 +188,7 @@ namespace YearChart
 			// optionsToolStripMenuItem
 			// 
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
 			this.optionsToolStripMenuItem.Text = "&Options...";
 			this.optionsToolStripMenuItem.ToolTipText = "Change the settings for the chart including year and title.";
 			this.optionsToolStripMenuItem.Click += new System.EventHandler(this.OptionsToolStripMenuItemClick);
@@ -196,9 +196,9 @@ namespace YearChart
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			                                                  	this.contentsToolStripMenuItem,
-			                                                  	this.toolStripSeparator5,
-			                                                  	this.aboutToolStripMenuItem});
+									this.contentsToolStripMenuItem,
+									this.toolStripSeparator5,
+									this.aboutToolStripMenuItem});
 			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
 			this.helpToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
 			this.helpToolStripMenuItem.Text = "&Help";
@@ -226,6 +226,7 @@ namespace YearChart
 			// printDocument
 			// 
 			this.printDocument.DocumentName = "Year Chart document";
+			this.printDocument.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument_PrintPage);
 			// 
 			// toolStripContainer
 			// 
@@ -247,15 +248,19 @@ namespace YearChart
 			// 
 			// yearChartPanel
 			// 
+			this.yearChartPanel.Abbreviate = false;
 			this.yearChartPanel.BackColor = System.Drawing.Color.White;
 			this.yearChartPanel.BlankColor = System.Drawing.Color.LightGray;
 			this.yearChartPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.yearChartPanel.ExtraRows = new string[0];
+			this.yearChartPanel.EndDate = new System.DateTime(2009, 12, 31, 0, 0, 0, 0);
+			this.yearChartPanel.ExtraColumns = new YearChart.Model.YearChartCell[0];
+			this.yearChartPanel.ExtraRows = new YearChart.Model.YearChartCell[0];
 			this.yearChartPanel.HeadingColor = System.Drawing.Color.Yellow;
 			this.yearChartPanel.Location = new System.Drawing.Point(0, 0);
 			this.yearChartPanel.Name = "yearChartPanel";
 			this.helpProvider.SetShowHelp(this.yearChartPanel, true);
 			this.yearChartPanel.Size = new System.Drawing.Size(592, 342);
+			this.yearChartPanel.StartDate = new System.DateTime(2009, 1, 1, 0, 0, 0, 0);
 			this.yearChartPanel.TabIndex = 0;
 			this.yearChartPanel.Title = "Year Chart 2009";
 			this.yearChartPanel.WeekendColor = System.Drawing.Color.Orange;
@@ -269,8 +274,8 @@ namespace YearChart
 			// 
 			// pageSetupDialog
 			// 
-			this.pageSetupDialog.EnableMetric = true;
 			this.pageSetupDialog.Document = this.printDocument;
+			this.pageSetupDialog.EnableMetric = true;
 			// 
 			// printPreviewDialog
 			// 
@@ -307,82 +312,6 @@ namespace YearChart
 			this.toolStripContainer.ResumeLayout(false);
 			this.toolStripContainer.PerformLayout();
 			this.ResumeLayout(false);
-		}
-		
-		void PageSetupToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			pageSetupDialog.ShowDialog();
-		}
-
-		void PrintPreviewToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			try
-			{
-				printPreviewDialog.ShowDialog();
-			}
-			catch( Exception ex )
-			{
-				MessageBox.Show( "Failed to print Year Chart:\n" + ex.Message, "Year Chart", MessageBoxButtons.OK, MessageBoxIcon.Error );
-			}
-		}
-		
-		private void printDocument_PrintPage( object sender, PrintPageEventArgs ev )
-		{
-			yearChartPanel.Draw( ev.Graphics, ev.MarginBounds );
-
-			ev.HasMorePages = false;
-		}
-
-		void PrintToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			if( printDialog.ShowDialog() == DialogResult.OK )
-			{
-				try
-				{
-					printDocument.Print();
-				}
-				catch( Exception ex )
-				{
-					MessageBox.Show( "Failed to print Year Chart:\n" + ex.Message, "Year Chart", MessageBoxButtons.OK, MessageBoxIcon.Error );
-				}
-			}
-		}
-		
-		void ExitToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			Close();
-		}
-		
-		void OptionsToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			doOptionsDialog();
-		}
-		
-		void ContentsToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			Help.ShowHelp( this, "YearChart.chm", HelpNavigator.TableOfContents );
-		}
-		
-		void IndexToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			Help.ShowHelpIndex( this, "YearChart.chm" );
-		}
-		
-		void SearchToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			Help.ShowHelp( this, "YearChart.chm", HelpNavigator.Find );
-		}
-		
-		void AboutToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			AboutForm dialog = new AboutForm();
-
-			DialogResult result = dialog.ShowDialog( this );
-		}
-		
-		void YearChartPanelDoubleClick(object sender, EventArgs e)
-		{
-			doOptionsDialog();
 		}
 	}
 }

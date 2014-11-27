@@ -46,6 +46,11 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\DayCell.cs" />
+    <Compile Include="Model\ExtraCell.cs" />
+    <Compile Include="Model\HeadingCell.cs" />
+    <Compile Include="Model\YearChartCell.cs" />
+    <Compile Include="Model\YearChartModel.cs" />
     <Compile Include="YearChartOptionsForm.cs" />
     <Compile Include="YearChartOptionsForm.Designer.cs">
       <DependentUpon>YearChartOptionsForm.cs</DependentUpon>
@@ -57,8 +62,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="YearData.cs" />
-    <Compile Include="YearDay.cs" />
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -74,5 +77,8 @@
     <None Include="YearChart.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model" />
   </ItemGroup>
 </Project>

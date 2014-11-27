@@ -60,12 +60,13 @@ namespace YearChart
 			this.buttonOK = new System.Windows.Forms.Button();
 			this.linkWebsite = new System.Windows.Forms.LinkLabel();
 			this.labelVersion = new System.Windows.Forms.Label();
+			this.labelNetVersion = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// buttonOK
 			// 
 			this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.buttonOK.Location = new System.Drawing.Point(101, 323);
+			this.buttonOK.Location = new System.Drawing.Point(101, 344);
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.Size = new System.Drawing.Size(75, 23);
 			this.buttonOK.TabIndex = 0;
@@ -75,21 +76,32 @@ namespace YearChart
 			// linkWebsite
 			// 
 			this.linkWebsite.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-			this.linkWebsite.Location = new System.Drawing.Point(12, 294);
+			this.linkWebsite.Location = new System.Drawing.Point(12, 315);
 			this.linkWebsite.Name = "linkWebsite";
-			this.linkWebsite.Size = new System.Drawing.Size(186, 23);
+			this.linkWebsite.Size = new System.Drawing.Size(245, 19);
 			this.linkWebsite.TabIndex = 1;
 			this.linkWebsite.TabStop = true;
 			this.linkWebsite.Text = "http://www.kajabity.com/";
+			this.linkWebsite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.linkWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkWebsiteLinkClicked);
 			// 
 			// labelVersion
 			// 
 			this.labelVersion.Location = new System.Drawing.Point(12, 271);
 			this.labelVersion.Name = "labelVersion";
-			this.labelVersion.Size = new System.Drawing.Size(186, 23);
+			this.labelVersion.Size = new System.Drawing.Size(245, 23);
 			this.labelVersion.TabIndex = 2;
-			this.labelVersion.Text = "Kajabity Year Chart v0.2";
+			this.labelVersion.Text = "Kajabity Year Chart vX.X.X.X";
+			this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// labelNetVersion
+			// 
+			this.labelNetVersion.Location = new System.Drawing.Point(12, 292);
+			this.labelNetVersion.Name = "labelNetVersion";
+			this.labelNetVersion.Size = new System.Drawing.Size(245, 23);
+			this.labelNetVersion.TabIndex = 3;
+			this.labelNetVersion.Text = ".NET Framework vX.X.X.X";
+			this.labelNetVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// AboutForm
 			// 
@@ -98,7 +110,8 @@ namespace YearChart
 			this.BackColor = System.Drawing.SystemColors.Window;
 			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.ClientSize = new System.Drawing.Size(269, 358);
+			this.ClientSize = new System.Drawing.Size(269, 379);
+			this.Controls.Add(this.labelNetVersion);
 			this.Controls.Add(this.labelVersion);
 			this.Controls.Add(this.linkWebsite);
 			this.Controls.Add(this.buttonOK);
@@ -109,5 +122,6 @@ namespace YearChart
 			this.Text = "About Kajabity Year Chart";
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Label labelNetVersion;
 	}
 }

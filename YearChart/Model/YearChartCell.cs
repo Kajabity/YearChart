@@ -18,24 +18,35 @@
  * http://www.kajabity.com
  */
 
+/*
+ * Created by SharpDevelop.
+ * User: simon
+ * Date: 31/07/2009
+ * Time: 23:29
+ * 
+ */
 using System;
 
-namespace YearChart
+namespace YearChart.Model
 {
-    public enum YearDayType { Blank, Heading, Weekday, Weekend };
-
-    /// <summary>
-	/// Summary description for YearDay.
+    public enum CellType { Blank, Heading, Weekday, Weekend, Extra };
+    
+	/// <summary>
+	/// Description of ModelCell.
 	/// </summary>
-	public class YearDay
+	public abstract class YearChartCell
 	{
-        public YearDayType type = YearDayType.Blank;
+        public CellType type = CellType.Blank;
         public string text = "";
 
-		public YearDay( YearDayType type, string text )
+		protected YearChartCell( CellType type, string text )
 		{
             this.type = type;
             this.text = text;
+		}
+		
+		protected YearChartCell()
+		{
 		}
 	}
 }

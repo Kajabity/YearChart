@@ -26,6 +26,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace YearChart
 {
@@ -41,11 +42,15 @@ namespace YearChart
 			//
 			InitializeComponent();
 			
-			//
-			// TODO: Add constructor code after the InitializeComponent() call.
-			//
+			string version = Application.ProductName + " v" + Application.ProductVersion.ToString();
+			Debug.WriteLine( "App. Version: " + version );
+			labelVersion.Text = version;
+			
+			version = ".NET Framework v" + Environment.Version.ToString();
+			Debug.WriteLine( ".NET Version: " + version );
+			labelNetVersion.Text = version;
 		}
-		
+
 		void LinkWebsiteLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			//TODO: Use the Link from 'e'.
