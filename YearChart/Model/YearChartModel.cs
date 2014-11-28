@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Williams Technologies Limtied.
+ * Copyright 2009-14 Williams Technologies Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -200,7 +200,7 @@ namespace YearChart.Model
 			}
 		}
 
-		private bool abbreviate = false;
+		private bool abbreviate;
 		
 		/// <summary>
 		/// Determines if the full names of Weekdays and Months will be shown (false) or 
@@ -276,9 +276,13 @@ namespace YearChart.Model
 		/// </summary>
 		public YearChartModel()
 		{
-			Year = DateTime.Today.Year;
+			DateTime now = DateTime.Now;
+			Year = now.Year;
+			startOfWeek = DayOfWeek.Monday;
+			title = "Year Chart";
 			extraRows = new YearChartCell[0];
 			extraColumns = new YearChartCell[0];
+			abbreviate = false;
 		}
 
 		/// <summary>

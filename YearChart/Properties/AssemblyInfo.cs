@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright 2009 Williams Technologies Limtied.
+ * Copyright 2009-14 Williams Technologies Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Williams Technologies Limited")]
 [assembly: AssemblyProduct("Kajabity Year Chart")]
-[assembly: AssemblyCopyright("Copyright 2009")]
+[assembly: AssemblyCopyright("Copyright 2009-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -48,4 +48,4 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
-[assembly: AssemblyVersion("0.3.*")]
+[assembly: AssemblyVersion("0.4.0.*")]

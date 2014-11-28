@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Williams Technologies Limtied.
+ * Copyright 2009-14 Williams Technologies Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,8 @@
  * Date: 11/01/2009
  */
 using System;
-using System.Drawing;
-using System.Windows.Forms;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace YearChart
 {
