@@ -1,9 +1,11 @@
 Kajabity Year Chart
 ===================
 
+[![Build status](https://ci.appveyor.com/api/projects/status/nmuw0f0lqo2jva9n?svg=true)](https://ci.appveyor.com/project/Kajabity/yearchart)
+
 A Windows Application to create a printable day-to-day chart for any range of dates from 1 day to 5 years.
 
-Use Kajabity Year Chart to produce a Financial Year planner, Academic Year Planner or any chart for any number of days.  It’s a lot easier than trying to set it all up in a Spreadsheet (I know, I used to do this in Microsoft Excel and got fed up with it).
+Use Kajabity Year Chart to produce a Financial Year planner, Academic Year Planner or any chart for any number of days.  It's a lot easier than trying to set it all up in a Spreadsheet (I know, I used to do this in Microsoft Excel and got fed up with it).
 
 Features:
 

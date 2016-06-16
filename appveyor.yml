@@ -1,0 +1,61 @@
+#---------------------------------# 
+#      general configuration      # 
+#---------------------------------# 
+ 
+# version format 
+version: 0.4-{build}
+
+# Do not build on tags (GitHub only)
+# This avoids the infinite build loop as Deploy to GitHub is set to create a tag each time.
+skip_tags: true 
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: $(appveyor_build_version)
+  assembly_file_version: $(appveyor_build_version)
+  assembly_informational_version: $(appveyor_build_version)
+
+#---------------------------------# 
+#    environment configuration    # 
+#---------------------------------# 
+ 
+# scripts that are called at very beginning, before repo cloning 
+init:
+  - cmd: git config --global core.autocrlf input
+
+#---------------------------------# 
+#       build configuration       # 
+#---------------------------------# 
+ 
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Release
+
+build:
+    # MSBuild verbosity level - one of quiet|minimal|normal|detailed
+    verbosity: normal
+
+#---------------------------------# 
+#      artifacts configuration    # 
+#---------------------------------# 
+ 
+artifacts:
+  - path: YearChart\bin\$(configuration)\YearChart.exe
+
+  - path: YearChart.WiX\bin\$(configuration)\YearChart.msi
+
+#---------------------------------# 
+#     deployment configuration    # 
+#---------------------------------# 
+
+# providers: Local, FTP, WebDeploy, AzureCS, AzureBlob, S3, NuGet, Environment 
+# provider names are case-sensitive! 
+
+deploy:
+
+    # Deploy to GitHub Releases 
+  - provider: GitHub
+    release: yearchart-v$(appveyor_build_version)
+    description: YearChart Release v$(appveyor_build_version)
+    auth_token:
+        secure: U61pPuPTfr+NRMph10xjc9dLobyfv6O5R5gu3nGdaCmbMhh2GdRiSy1HnnG4QfYQ
