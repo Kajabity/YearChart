@@ -106,6 +106,9 @@
     <EmbeddedResource Include="YearChartOptionsForm.resx">
       <DependentUpon>YearChartOptionsForm.Designer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="YearChartPanel.resx">
+      <DependentUpon>YearChartPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="YearChart.chm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

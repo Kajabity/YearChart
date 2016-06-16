@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2009-14 Williams Technologies Limited.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+    Kajbity is a trademark of Williams Technologies Limited.
+
+    http://www.kajabity.com
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define ProductVersion = "!(bind.FileVersion.$(var.YearChart.TargetFileName))"?>
+  <?define ProductName = "Year Chart"?>
+  <?define Manufacturer = "Kajabity"?>
+
+  <!-- 
+    Product ID - Changes at Major - so all version 0.*.* should be the same.
+    Version 0.2 ID: 17AC1468-75FE-4807-8437-021D0F3BA3E5
+    Version 0.3 ID: 1970A0D2-E516-4083-B9D3-69993DD90CF7
+  -->
+  <!--?define ProductGuid = "1970A0D2-E516-4083-B9D3-69993DD90CF7"?   $(var.ProductGuid)  -->
+
+  <?define UpgradeGuid = "259CC1D8-C477-4E94-B6C8-87EFC2D433BC"?>
+
+  <Product Id="*"
+           Name="Kajabity $(var.ProductName)"
+           Version="$(var.ProductVersion)"
+           Language="1033"
+           UpgradeCode="$(var.UpgradeGuid)"
+           Manufacturer="$(var.Manufacturer)">
+
+    <Package Description="Kajabity $(var.ProductName) $(var.ProductVersion) Installer for Microsoft Windows"
+             Comments="Kajabity is a Trade Mark of Williams Technologies Limited"
+             InstallerVersion="200" 
+             Compressed="yes"
+             Manufacturer="$(var.Manufacturer)"
+             InstallScope="perMachine" />
+    
+    <MajorUpgrade
+      Schedule="afterInstallFinalize"
+      DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit."/>
+
+      <!--
+      Source media for the installation. 
+      Specifies a single cab file to be embedded in the installer's .msi. 
+    -->
+    <Media Id="1" Cabinet="YearChart.cab" EmbedCab="yes" CompressionLevel="high"/>
+
+    <!--
+      Application Icons.
+    -->
+    <Icon Id="$(var.YearChart.TargetFileName)" SourceFile="$(var.YearChart.TargetPath)"/>
+
+    <!-- Define the directories. -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="CompanyDir" Name="Kajabity">
+          <Directory Id="INSTALLDIR" Name="$(var.ProductName)"/>
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ShortCutDir" Name="Kajabity $(var.ProductName)"/>
+      </Directory>
+
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="AppComponent"
+                 Guid="363F8345-A0E1-4B50-8F8B-641E0990E501"
+                 DiskId="1">
+
+        <!-- The application executable -->
+        <File Id="$(var.YearChart.TargetFileName)"
+              Name="$(var.YearChart.TargetFileName)"
+              Vital="yes"
+              Source="$(var.YearChart.TargetPath)"
+              DiskId="1"
+              KeyPath="yes">
+
+          <Shortcut Id="PMShortCutYearChart"
+                    Directory="ShortCutDir"
+                    Name="$(var.ProductName)"
+                    Description="Create and print a daily chart for the year."
+                    Advertise="yes"
+                    Icon="$(var.YearChart.TargetFileName)"
+                    WorkingDirectory="INSTALLDIR"/>
+
+          <Shortcut Id="DesktopShortCutYearChart"
+                    Directory="DesktopFolder"
+                    Name="$(var.ProductName)"
+                    Description="Create and print a daily chart for the year."
+                    Advertise="yes"
+                    Icon="$(var.YearChart.TargetFileName)"
+                    WorkingDirectory="INSTALLDIR"/>
+        </File>
+
+        <RemoveFolder Id="DeleteShortcutFolder"
+                      Directory="ShortCutDir"
+                      On="uninstall"/>
+      </Component>
+
+      <Component Id="LicenseComponent"
+                 Guid="D6541E9C-9320-4E40-8F8E-C0AF3D81FB90"
+                 DiskId="1">
+
+        <!-- The License file -->
+        <File Id="LicenseFile"
+              Name="license.rtf"
+              DiskId="1"
+              Source="$(var.ProjectDir)\license.rtf"
+              Vital="yes"
+              KeyPath="yes"/>
+      </Component>
+
+      <Component Id="HelpComponent"
+                 Guid="308A2B7F-66D7-48F4-BEA1-D83CC14AF862"
+                 DiskId="1">
+
+        <!-- The Help file -->
+        <File Id="YearChart.chm"
+              Name="YearChart.chm"
+              Vital="yes"
+              Source="$(var.YearChart.ProjectDir)\YearChart.chm"
+              DiskId="1"
+              KeyPath="yes">
+
+          <Shortcut Id="PMShortCutHelp"
+                    Name="Year Chart Help"
+                    Description="Help information on using $(var.ProductName)."
+                    Directory="ShortCutDir"
+                    Advertise="yes"/>
+        </File>
+      </Component>
+    </DirectoryRef>
+
+    <Feature Id="Complete"
+             Title="Year Chart"
+             Description="Kajabity $(var.ProductName)"
+             Level="1"
+             AllowAdvertise="yes"
+             TypicalDefault="advertise"
+             ConfigurableDirectory="INSTALLDIR">
+
+      <ComponentRef Id="AppComponent"/>
+      <ComponentRef Id="LicenseComponent"/>
+      <ComponentRef Id="HelpComponent"/>
+
+    </Feature>
+
+
+    <!--
+      Using the Wix UI library
+ 
+      WixUI_InstallDir does not allow the user to choose 
+      features but adds a dialog to let the user choose a 
+      directory where the product will be installed
+    -->
+    <Property Id="WIXUI_INSTALLDIR">INSTALLDIR</Property>
+    <UIRef Id="WixUI_InstallDir"/>
+
+    <!--
+      Customise the images.
+    -->
+    <WixVariable Id="WixUIBannerBmp" Value="Bitmaps\bannrbmp.bmp"/>
+    <WixVariable Id="WixUIDialogBmp" Value="Bitmaps\dlgbmp.bmp"/>
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+
+    <!-- 
+      Add Remove Programs properties.
+    <Property Id='ARPCOMMENTS'>any comments</Property>
+    <Property Id='ARPCONTACT'>contact info</Property>
+    <Property Id='ARPHELPLINK'>URL for technical support</Property>
+    <Property Id='ARPURLINFOABOUT'>URL for general info about the product</Property>
+    <Property Id='ARPURLUPDATEINFO'>URL for product updates</Property>
+    <Property Id='ARPHELPTELEPHONE'>URL for technical support</Property>
+    <Property Id='ARPREADME'>path</Property>
+    <Property Id='ARPSIZE'>app size in kilobytes</Property>
+    -->
+
+  </Product>
+</Wix>
