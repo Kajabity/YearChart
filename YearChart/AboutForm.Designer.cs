@@ -91,7 +91,7 @@ namespace YearChart
 			this.labelVersion.Name = "labelVersion";
 			this.labelVersion.Size = new System.Drawing.Size(245, 23);
 			this.labelVersion.TabIndex = 2;
-			this.labelVersion.Text = "Kajabity Year Chart vX.X.X.X";
+			this.labelVersion.Text = "Kajabity YearChart vX.X.X.X";
 			this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// labelNetVersion
@@ -119,7 +119,7 @@ namespace YearChart
 			this.Name = "AboutForm";
 			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.Text = "About Kajabity Year Chart";
+			this.Text = "About Kajabity YearChart";
 			this.ResumeLayout(false);
 		}
 		private System.Windows.Forms.Label labelNetVersion;

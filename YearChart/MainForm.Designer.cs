@@ -160,7 +160,7 @@ namespace YearChart
             this.printToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
             this.printToolStripMenuItem.Size = new System.Drawing.Size( 157, 22 );
             this.printToolStripMenuItem.Text = "&Print...";
-            this.printToolStripMenuItem.ToolTipText = "Print the Year Chart to your selected printer.";
+            this.printToolStripMenuItem.ToolTipText = "Print the YearChart to your selected printer.";
             this.printToolStripMenuItem.Click += new System.EventHandler( this.PrintToolStripMenuItemClick );
             // 
             // toolStripSeparator2
@@ -224,7 +224,7 @@ namespace YearChart
             // 
             // printDocument
             // 
-            this.printDocument.DocumentName = "Year Chart document";
+            this.printDocument.DocumentName = "YearChart document";
             this.printDocument.PrintPage += new System.Drawing.Printing.PrintPageEventHandler( this.printDocument_PrintPage );
             // 
             // toolStripContainer
@@ -261,7 +261,7 @@ namespace YearChart
             this.yearChartPanel.Size = new System.Drawing.Size( 624, 386 );
             //this.yearChartPanel.StartDate = new System.DateTime( 2011, 1, 1, 0, 0, 0, 0 );
             this.yearChartPanel.TabIndex = 0;
-            this.yearChartPanel.Title = "Year Chart";
+            this.yearChartPanel.Title = "YearChart";
             //this.yearChartPanel.WeekendColor = System.Drawing.Color.Orange;
             //this.yearChartPanel.WeekStartDay = System.DayOfWeek.Monday;
             //this.yearChartPanel.Year = 2011;
@@ -314,7 +314,7 @@ namespace YearChart
             this.Icon = ((System.Drawing.Icon) (resources.GetObject( "$this.Icon" )));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
-            this.Text = "Kajabity Year Chart";
+            this.Text = "Kajabity YearChart";
             this.menuStrip.ResumeLayout( false );
             this.menuStrip.PerformLayout();
             this.toolStripContainer.ContentPanel.ResumeLayout( false );

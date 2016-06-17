@@ -505,7 +505,7 @@ namespace YearChart
 			this.Name = "YearChartOptionsForm";
 			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.Text = "Year Chart Options";
+			this.Text = "YearChart Options";
 			((System.ComponentModel.ISupportInitialize)(this.numericYear)).EndInit();
 			this.groupExtraRows.ResumeLayout(false);
 			this.groupExtraRows.PerformLayout();

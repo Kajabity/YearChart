@@ -117,7 +117,7 @@ namespace YearChart
             }
             catch( Exception ex )
             {
-                MessageBox.Show( "Failed to print Year Chart:\n" + ex.Message, "Year Chart", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                MessageBox.Show( "Failed to print YearChart:\n" + ex.Message, "YearChart", MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
         }
 
@@ -186,7 +186,7 @@ namespace YearChart
             {
                 printDocument.DefaultPageSettings.Margins = new Margins( Left, ( ev.PageBounds.Right - Right ), Top, ( ev.PageBounds.Bottom - Bottom ) );
                 Debug.WriteLine( "Adjusted Margins " + printDocument.DefaultPageSettings.Margins );
-                MessageBox.Show( "Page Margins set outside printable area - adjusted to fit.", "Kajabity Year Chart" );
+                MessageBox.Show( "Page Margins set outside printable area - adjusted to fit.", "Kajabity YearChart" );
             }
 
             Rectangle MarginBounds = new Rectangle( Left, Top, ( Right - Left ), ( Bottom - Top ) );
@@ -220,7 +220,7 @@ namespace YearChart
                 }
                 catch( Exception ex )
                 {
-                    MessageBox.Show( "Failed to print Year Chart:\n" + ex.Message, "Year Chart", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    MessageBox.Show( "Failed to print YearChart:\n" + ex.Message, "YearChart", MessageBoxButtons.OK, MessageBoxIcon.Error );
                 }
             }
         }
@@ -287,7 +287,7 @@ namespace YearChart
         }
 
         /// <summary>
-        /// Saves a copy of the Year Chart in HTML format file.
+        /// Saves a copy of the YearChart in HTML format file.
         /// </summary>
         /// <param name="filename">The name and path of the HTML file to be written.</param>
         private void SaveAsHtml( string filename )

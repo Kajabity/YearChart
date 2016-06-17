@@ -29,9 +29,9 @@ namespace YearChart
         private YearChartModel model;
 
         /// <summary>
-        /// Construct a writer for a specified Year Chart model instance.
+        /// Construct a writer for a specified YearChart model instance.
         /// </summary>
-        /// <param name="model">The Year Chart model instance that is to be written as HTML.</param>
+        /// <param name="model">The YearChart model instance that is to be written as HTML.</param>
         public YearChartHtmlWriter( YearChartModel model )
         {
             this.model = model;

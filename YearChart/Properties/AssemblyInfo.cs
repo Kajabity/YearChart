@@ -29,11 +29,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Kajabity Year Chart")]
-[assembly: AssemblyDescription("Create and Print Year Charts.")]
+[assembly: AssemblyTitle("Kajabity YearChart")]
+[assembly: AssemblyDescription("Create and Print YearCharts.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Williams Technologies Limited")]
-[assembly: AssemblyProduct("Kajabity Year Chart")]
+[assembly: AssemblyProduct("Kajabity YearChart")]
 [assembly: AssemblyCopyright("Copyright 2009-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

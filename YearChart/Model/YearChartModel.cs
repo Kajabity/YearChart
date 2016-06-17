@@ -167,7 +167,7 @@ namespace YearChart.Model
 		private DateTime startDate;
 		
 		/// <summary>
-		/// The starting date for the year chart.
+		/// The starting date for the YearChart.
 		/// Must be less than the EndDate.
 		/// </summary>
 		public DateTime StartDate
@@ -185,7 +185,7 @@ namespace YearChart.Model
 		private DateTime endDate;
 		
 		/// <summary>
-		/// The end date for the year chart.
+		/// The end date for the YearChart.
 		/// Must be greater than the StartDate.
 		/// </summary>
 		public DateTime EndDate
@@ -221,7 +221,7 @@ namespace YearChart.Model
 		private string title;
 		
 		/// <summary>
-		/// The title of the Year Chart - displayed at the top.
+		/// The title of the YearChart - displayed at the top.
 		/// </summary>
 		public string Title
 		{
@@ -279,7 +279,7 @@ namespace YearChart.Model
 			DateTime now = DateTime.Now;
 			Year = now.Year;
 			startOfWeek = DayOfWeek.Monday;
-			title = "Year Chart";
+			title = "YearChart";
 			extraRows = new YearChartCell[0];
 			extraColumns = new YearChartCell[0];
 			abbreviate = false;
