@@ -178,16 +178,18 @@
     <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
 
     <!-- 
-      Add Remove Programs properties.
-    <Property Id='ARPCOMMENTS'>any comments</Property>
-    <Property Id='ARPCONTACT'>contact info</Property>
-    <Property Id='ARPHELPLINK'>URL for technical support</Property>
-    <Property Id='ARPURLINFOABOUT'>URL for general info about the product</Property>
-    <Property Id='ARPURLUPDATEINFO'>URL for product updates</Property>
-    <Property Id='ARPHELPTELEPHONE'>URL for technical support</Property>
-    <Property Id='ARPREADME'>path</Property>
-    <Property Id='ARPSIZE'>app size in kilobytes</Property>
-    -->
+			Add Remove Programs properties.
+		<Property Id='ARPHELPLINK'>URL for technical support</Property>
+		<Property Id='ARPURLINFOABOUT'>URL for general info about the product</Property>
+		<Property Id='ARPURLUPDATEINFO'>URL for product updates</Property>
+		<Property Id='ARPHELPTELEPHONE'>URL for technical support</Property>
+		<Property Id='ARPREADME'>path</Property>
+		<Property Id='ARPSIZE'>app size in kilobytes</Property>
+		-->
+    <Property Id="ARPCONTACT" Value="Simon J. Williams" />
+    <Property Id="ARPCOMMENTS" Value="Create and print a daily chart for the year." />
+    <Property Id="ARPURLINFOABOUT" Value="http://www.kajabity.com" />
+    <Property Id="ARPPRODUCTICON" Value="$(var.YearChart.TargetFileName)" />
 
   </Product>
 </Wix>
