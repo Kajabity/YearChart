@@ -234,7 +234,7 @@ namespace YearChart
             {
                 SizeF s = g.MeasureString( model.Cells[ 0, i ].text, fontHeading );
 
-                if( sizeDOW == null || s.Width > sizeDOW.Width )
+                if (s.Width > sizeDOW.Width)
                 {
                     sizeDOW = s;
                 }

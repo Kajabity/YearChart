@@ -21,6 +21,7 @@ website/
 *.sln.docstates
 *.DotSettings
 .vs/
+.dotnet/
 
 # Build results
 [Dd]ebug/
