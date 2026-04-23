@@ -1,0 +1,63 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    env:
+      Configuration: Release
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        cache: true
+        cache-dependency-path: |
+          YearChart/YearChart.csproj
+          YearChart.WiX/YearChart.WiX.wixproj
+
+    - name: Restore
+      run: dotnet restore YearChart.sln
+
+    - name: Build
+      run: dotnet build YearChart.sln --configuration $env:Configuration --no-restore
+
+    - name: Test
+      shell: pwsh
+      run: |
+        $testProjects = Get-ChildItem -Recurse -Include *Tests.csproj,*Test.csproj | Select-Object -ExpandProperty FullName
+
+        if (-not $testProjects) {
+          Write-Host "No test projects found. Skipping tests."
+          exit 0
+        }
+
+        foreach ($project in $testProjects) {
+          dotnet test $project --configuration $env:Configuration --no-build --logger "trx"
+        }
+
+    - name: Upload application artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: YearChart-app
+        path: |
+          YearChart/bin/Release/net8.0-windows/**
+        if-no-files-found: error
+
+    - name: Upload installer artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: YearChart-installer
+        path: |
+          YearChart.WiX/bin/x86/Release/*.msi
+          YearChart.WiX/bin/x86/Release/*.wixpdb
+        if-no-files-found: error
