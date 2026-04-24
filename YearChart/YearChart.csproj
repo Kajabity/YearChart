@@ -4,9 +4,10 @@
     <OutputType>WinExe</OutputType>
     <AssemblyTitle>Kajabity YearChart</AssemblyTitle>
     <Description>Create and Print YearCharts.</Description>
-    <Company>Williams Technologies Limited</Company>
+    <Company>Kajabity</Company>
+    <Authors>Simon J. Williams</Authors>
     <Product>Kajabity YearChart</Product>
-    <Copyright>Copyright 2009-2014</Copyright>
+    <Copyright>Copyright 2009-2026 Simon J. Williams</Copyright>
     <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\Simon\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <StartupObject>YearChart.Program</StartupObject>
     <ApplicationIcon>YearChart.ico</ApplicationIcon>
