@@ -2,9 +2,10 @@
   <PropertyGroup>
     <ProductVersion>3.5</ProductVersion>
     <OutputName>YearChart</OutputName>
+    <DefineConstants>$(DefineConstants);YearChartReleaseVersion=$(YearChartReleaseVersion)</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <DefineConstants>Debug</DefineConstants>
+    <DefineConstants>$(DefineConstants);Debug</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Bitmaps\bannrbmp.bmp" />

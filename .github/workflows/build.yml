@@ -11,10 +11,23 @@ jobs:
 
     env:
       Configuration: Release
+      BuildVersion: 0.0.0-dev
 
     steps:
     - name: Checkout
       uses: actions/checkout@v5
+
+    - name: Resolve build version
+      if: github.ref_type == 'tag'
+      shell: pwsh
+      run: |
+        $version = "${{ github.ref_name }}"
+
+        if ($version -notmatch '^\d+\.\d+\.\d+$') {
+          throw "Release tag '$version' must be in X.Y.Z format."
+        }
+
+        "BuildVersion=$version" >> $env:GITHUB_ENV
 
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v5
@@ -29,7 +42,7 @@ jobs:
       run: dotnet restore YearChart.sln
 
     - name: Build
-      run: dotnet build YearChart.sln --configuration $env:Configuration --no-restore
+      run: dotnet build YearChart.sln --configuration $env:Configuration --no-restore /p:Version=$env:BuildVersion
 
     - name: Test
       shell: pwsh

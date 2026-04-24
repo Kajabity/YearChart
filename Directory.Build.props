@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <Version Condition="'$(Version)' == ''">0.0.0-dev</Version>
+    <YearChartReleaseVersion Condition="'$(YearChartReleaseVersion)' == '' and '$(Version)' != ''">$([System.Text.RegularExpressions.Regex]::Match('$(Version)', '^\d+\.\d+\.\d+').Value)</YearChartReleaseVersion>
+    <YearChartReleaseVersion Condition="'$(YearChartReleaseVersion)' == ''">0.0.0</YearChartReleaseVersion>
+  </PropertyGroup>
+</Project>

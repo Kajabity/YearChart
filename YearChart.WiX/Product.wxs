@@ -18,7 +18,6 @@
     http://www.kajabity.com
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-  <?define ProductVersion = "!(bind.FileVersion.$(var.YearChart.TargetFileName))"?>
   <?define ProductName = "YearChart"?>
   <?define Manufacturer = "Kajabity"?>
 
@@ -31,7 +30,7 @@
 
   <?define UpgradeGuid = "259CC1D8-C477-4E94-B6C8-87EFC2D433BC"?>
 
-  <Package Name="Kajabity $(var.ProductName)" Version="$(var.ProductVersion)" Language="1033" UpgradeCode="$(var.UpgradeGuid)" Manufacturer="$(var.Manufacturer)" InstallerVersion="200"><SummaryInformation Description="Kajabity $(var.ProductName) $(var.ProductVersion) Installer for Microsoft Windows" Manufacturer="$(var.Manufacturer)" />
+  <Package Name="Kajabity $(var.ProductName)" Version="$(var.YearChartReleaseVersion)" Language="1033" UpgradeCode="$(var.UpgradeGuid)" Manufacturer="$(var.Manufacturer)" InstallerVersion="200"><SummaryInformation Description="Kajabity $(var.ProductName) $(var.YearChartReleaseVersion) Installer for Microsoft Windows" Manufacturer="$(var.Manufacturer)" />
     
     <MajorUpgrade Schedule="afterInstallFinalize" DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." />
 
