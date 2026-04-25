@@ -21,6 +21,9 @@ website/
 *.sln.docstates
 *.DotSettings
 .vs/
+.dotnet/
+.tools/
+.pre-commit-cache/
 
 # Build results
 [Dd]ebug/

@@ -1,19 +1,52 @@
 Kajabity YearChart
 ===================
 
-[![Build status](https://ci.appveyor.com/api/projects/status/nmuw0f0lqo2jva9n?svg=true)](https://ci.appveyor.com/project/Kajabity/yearchart)
+YearChart is a Windows desktop application for creating printable day-to-day charts for date ranges from 1 day to 5 years.
 
-A Windows Application to create a printable day-to-day chart for any range of dates from 1 day to 5 years.
+It is useful for financial year planners, academic year planners, and other calendar-style planning layouts that are awkward to produce and maintain in a spreadsheet.
 
-Use Kajabity YearChart to produce a Financial Year planner, Academic Year Planner or any chart for any number of days.  It's a lot easier than trying to set it all up in a Spreadsheet (I know, I used to do this in Microsoft Excel and got fed up with it).
+Features
+--------
 
-Features:
-
-* Print a Year Planner for any year or any range of dates up to 5 years.
+* Print a year planner for any year or any range of dates up to 5 years.
 * Print on any size of paper your printer can print to.
 * Includes Print Preview and Page Setup.
 * Customise the title and first day of the week.
 * Add extra labelled rows or columns to the chart.
-* Fully detailed help included.
+* Includes built-in help.
 
-For much more details go to [http://www.kajabity.com/year-chart/](http://www.kajabity.com/year-chart/).
+Current Status
+--------------
+
+* Windows-only desktop application.
+* WinForms application with a WiX installer project.
+* GitHub Actions workflows for build, secret scanning, vulnerability scanning, and dependency update automation.
+* The current codebase builds with the .NET 10 SDK.
+
+Build
+-----
+
+From the repository root:
+
+```powershell
+dotnet restore YearChart.sln
+dotnet build YearChart.sln -c Release
+```
+
+The application project is in `YearChart/` and the installer project is in `YearChart.WiX/`.
+
+Quality And Security
+--------------------
+
+* GitHub Actions is used for CI.
+* Dependabot is enabled for dependency updates.
+* Secret scanning is configured locally via `pre-commit` and in GitHub Actions.
+* Vulnerability scanning is configured in GitHub Actions.
+
+Project Notes
+-------------
+
+* This repository is being modernised incrementally.
+* Small specs for engineering and feature work live under `specs/`.
+
+For much more detail on the original application, see <http://www.kajabity.com/year-chart/>.

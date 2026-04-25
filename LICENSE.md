@@ -1,4 +1,4 @@
-Copyright 2009-14 Williams Technologies Limited.
+Copyright 2009-2026 Simon J. Williams.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -12,6 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
  
-Kajbity is a trademark of Williams Technologies Limited.
+Kajabity is a trade mark of Simon J. Williams.
  
 http://www.kajabity.com

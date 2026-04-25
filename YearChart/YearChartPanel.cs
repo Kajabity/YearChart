@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-14 Williams Technologies Limited.
+ * Copyright 2009-2026 Simon J. Williams.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * Kajbity is a trademark of Williams Technologies Limited.
+ * Kajabity is a trade mark of Simon J. Williams.
  * 
  * http://www.kajabity.com
  */
@@ -24,6 +24,7 @@
  * Date: 10/01/2009
  */
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -71,6 +72,7 @@ namespace YearChart
         }
 
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public DayOfWeek WeekStartDay
         {
             get
@@ -83,6 +85,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public int Year
         {
             get { return model.Year; }
@@ -97,6 +100,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public DateTime StartDate
         {
             get
@@ -109,6 +113,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public DateTime EndDate
         {
             get
@@ -121,6 +126,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public bool Abbreviate
         {
             get
@@ -133,6 +139,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public string Title
         {
             get { return model.Title; }
@@ -141,6 +148,7 @@ namespace YearChart
 
         private Color m_colorHeading = Color.Yellow;
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public Color HeadingColor
         {
             get { return m_colorHeading; }
@@ -149,6 +157,7 @@ namespace YearChart
 
         private Color m_colorWeekend = Color.Orange;
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public Color WeekendColor
         {
             get { return m_colorWeekend; }
@@ -157,12 +166,14 @@ namespace YearChart
 
         private Color m_colorBlank = Color.LightGray;
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public Color BlankColor
         {
             get { return m_colorBlank; }
             set { m_colorBlank = value; Invalidate(); }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public YearChartCell[] ExtraRows
         {
             get
@@ -176,6 +187,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public YearChartCell[] ExtraColumns
         {
             get
@@ -234,7 +246,7 @@ namespace YearChart
             {
                 SizeF s = g.MeasureString( model.Cells[ 0, i ].text, fontHeading );
 
-                if( sizeDOW == null || s.Width > sizeDOW.Width )
+                if (s.Width > sizeDOW.Width)
                 {
                     sizeDOW = s;
                 }

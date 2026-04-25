@@ -1,0 +1,40 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      github-actions-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+
+  - package-ecosystem: "nuget"
+    directory: "/YearChart"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "nuget"
+    groups:
+      nuget-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+
+  - package-ecosystem: "nuget"
+    directory: "/YearChart.WiX"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "nuget"
+    groups:
+      nuget-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
