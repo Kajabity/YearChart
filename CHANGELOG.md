@@ -4,6 +4,12 @@ All notable changes to YearChart are documented in this file.
 
 This project uses semantic versioning from version `0.5.0` onwards.
 
+## 0.6.0 - 2026-04-25
+
+### Changed
+
+* Switched the print command back to the classic WinForms print dialog so the working `Print Preview` command remains the app's preview path.
+
 ## 0.5.0 - 2026-04-25
 
 ### Added
