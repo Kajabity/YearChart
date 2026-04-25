@@ -50,7 +50,7 @@ namespace YearChart
 			labelNetVersion.Text = version;
 		}
 
-		void LinkWebsiteLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LinkWebsiteLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			//TODO: Use the Link from 'e'.
 			string target = linkWebsite.Text;

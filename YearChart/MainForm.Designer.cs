@@ -70,261 +70,241 @@ namespace YearChart
 			}
 			base.Dispose(disposing);
 		}
-		
-		/// <summary>
-		/// This method is required for Windows Forms designer support.
-		/// Do not change the method contents inside the source code editor. The Forms designer might
-		/// not be able to load this method if it was changed manually.
-		/// </summary>
-		private void InitializeComponent()
-		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( MainForm ) );
-            this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pageSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.printPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.printDocument = new System.Drawing.Printing.PrintDocument();
-            this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
-            this.yearChartPanel = new YearChart.YearChartPanel();
-            this.helpProvider = new System.Windows.Forms.HelpProvider();
-            this.pageSetupDialog = new System.Windows.Forms.PageSetupDialog();
-            this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
-            this.printDialog = new System.Windows.Forms.PrintDialog();
-            this.exportToHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuStrip.SuspendLayout();
-            this.toolStripContainer.ContentPanel.SuspendLayout();
-            this.toolStripContainer.TopToolStripPanel.SuspendLayout();
-            this.toolStripContainer.SuspendLayout();
-            this.SuspendLayout();
+
+        /// <summary>
+        /// This method is required for Windows Forms designer support.
+        /// Do not change the method contents inside the source code editor. The Forms designer might
+        /// not be able to load this method if it was changed manually.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            menuStrip = new System.Windows.Forms.MenuStrip();
+            fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            pageSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            printPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            exportToHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            printDocument = new System.Drawing.Printing.PrintDocument();
+            toolStripContainer = new System.Windows.Forms.ToolStripContainer();
+            yearChartPanel = new YearChartPanel();
+            helpProvider = new System.Windows.Forms.HelpProvider();
+            pageSetupDialog = new System.Windows.Forms.PageSetupDialog();
+            printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
+            printDialog = new System.Windows.Forms.PrintDialog();
+            menuStrip.SuspendLayout();
+            toolStripContainer.ContentPanel.SuspendLayout();
+            toolStripContainer.TopToolStripPanel.SuspendLayout();
+            toolStripContainer.SuspendLayout();
+            SuspendLayout();
             // 
             // menuStrip
             // 
-            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.menuStrip.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.toolsToolStripMenuItem,
-            this.helpToolStripMenuItem} );
-            this.menuStrip.Location = new System.Drawing.Point( 0, 0 );
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size( 624, 24 );
-            this.menuStrip.TabIndex = 0;
-            this.menuStrip.Text = "menuStrip1";
+            menuStrip.Dock = System.Windows.Forms.DockStyle.None;
+            menuStrip.ImageScalingSize = new System.Drawing.Size(28, 28);
+            menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, toolsToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip.Location = new System.Drawing.Point(0, 0);
+            menuStrip.Name = "menuStrip";
+            menuStrip.Size = new System.Drawing.Size(1248, 38);
+            menuStrip.TabIndex = 0;
+            menuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.pageSetupToolStripMenuItem,
-            this.printPreviewToolStripMenuItem,
-            this.printToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.exportToHTMLToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.exitToolStripMenuItem} );
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size( 37, 20 );
-            this.fileToolStripMenuItem.Text = "&File";
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { pageSetupToolStripMenuItem, printPreviewToolStripMenuItem, printToolStripMenuItem, toolStripSeparator1, exportToHTMLToolStripMenuItem, toolStripSeparator2, exitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new System.Drawing.Size(62, 34);
+            fileToolStripMenuItem.Text = "&File";
             // 
             // pageSetupToolStripMenuItem
             // 
-            this.pageSetupToolStripMenuItem.Name = "pageSetupToolStripMenuItem";
-            this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size( 157, 22 );
-            this.pageSetupToolStripMenuItem.Text = "Page Set&up...";
-            this.pageSetupToolStripMenuItem.ToolTipText = "Change the layout of the printed page - margins and orientation.";
-            this.pageSetupToolStripMenuItem.Click += new System.EventHandler( this.PageSetupToolStripMenuItemClick );
+            pageSetupToolStripMenuItem.Name = "pageSetupToolStripMenuItem";
+            pageSetupToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            pageSetupToolStripMenuItem.Text = "Page Set&up...";
+            pageSetupToolStripMenuItem.ToolTipText = "Change the layout of the printed page - margins and orientation.";
+            pageSetupToolStripMenuItem.Click += PageSetupToolStripMenuItemClick;
             // 
             // printPreviewToolStripMenuItem
             // 
-            this.printPreviewToolStripMenuItem.Image = ((System.Drawing.Image) (resources.GetObject( "printPreviewToolStripMenuItem.Image" )));
-            this.printPreviewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-            this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size( 157, 22 );
-            this.printPreviewToolStripMenuItem.Text = "Print Pre&view";
-            this.printPreviewToolStripMenuItem.ToolTipText = "Shows how the chart will look when printed.";
-            this.printPreviewToolStripMenuItem.Click += new System.EventHandler( this.PrintPreviewToolStripMenuItemClick );
+            printPreviewToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("printPreviewToolStripMenuItem.Image");
+            printPreviewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
+            printPreviewToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            printPreviewToolStripMenuItem.Text = "Print Pre&view";
+            printPreviewToolStripMenuItem.ToolTipText = "Shows how the chart will look when printed.";
+            printPreviewToolStripMenuItem.Click += PrintPreviewToolStripMenuItemClick;
             // 
             // printToolStripMenuItem
             // 
-            this.printToolStripMenuItem.Image = ((System.Drawing.Image) (resources.GetObject( "printToolStripMenuItem.Image" )));
-            this.printToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.printToolStripMenuItem.Name = "printToolStripMenuItem";
-            this.printToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.printToolStripMenuItem.Size = new System.Drawing.Size( 157, 22 );
-            this.printToolStripMenuItem.Text = "&Print...";
-            this.printToolStripMenuItem.ToolTipText = "Print the YearChart to your selected printer.";
-            this.printToolStripMenuItem.Click += new System.EventHandler( this.PrintToolStripMenuItemClick );
+            printToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("printToolStripMenuItem.Image");
+            printToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            printToolStripMenuItem.Name = "printToolStripMenuItem";
+            printToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P;
+            printToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            printToolStripMenuItem.Text = "&Print...";
+            printToolStripMenuItem.ToolTipText = "Print the YearChart to your selected printer.";
+            printToolStripMenuItem.Click += PrintToolStripMenuItemClick;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(312, 6);
+            // 
+            // exportToHTMLToolStripMenuItem
+            // 
+            exportToHTMLToolStripMenuItem.Name = "exportToHTMLToolStripMenuItem";
+            exportToHTMLToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            exportToHTMLToolStripMenuItem.Text = "Export to HTML";
+            exportToHTMLToolStripMenuItem.Click += exportToHTMLToolStripMenuItem_Click;
             // 
             // toolStripSeparator2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size( 154, 6 );
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(312, 6);
             // 
             // exitToolStripMenuItem
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size( 157, 22 );
-            this.exitToolStripMenuItem.Text = "E&xit";
-            this.exitToolStripMenuItem.ToolTipText = "Closes the appliction.";
-            this.exitToolStripMenuItem.Click += new System.EventHandler( this.ExitToolStripMenuItemClick );
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            exitToolStripMenuItem.Text = "E&xit";
+            exitToolStripMenuItem.ToolTipText = "Closes the appliction.";
+            exitToolStripMenuItem.Click += ExitToolStripMenuItemClick;
             // 
             // toolsToolStripMenuItem
             // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.optionsToolStripMenuItem} );
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size( 48, 20 );
-            this.toolsToolStripMenuItem.Text = "&Tools";
+            toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { optionsToolStripMenuItem });
+            toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            toolsToolStripMenuItem.Size = new System.Drawing.Size(78, 34);
+            toolsToolStripMenuItem.Text = "&Tools";
             // 
             // optionsToolStripMenuItem
             // 
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size( 125, 22 );
-            this.optionsToolStripMenuItem.Text = "&Options...";
-            this.optionsToolStripMenuItem.ToolTipText = "Change the settings for the chart including year and title.";
-            this.optionsToolStripMenuItem.Click += new System.EventHandler( this.OptionsToolStripMenuItemClick );
+            optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            optionsToolStripMenuItem.Size = new System.Drawing.Size(219, 40);
+            optionsToolStripMenuItem.Text = "&Options...";
+            optionsToolStripMenuItem.ToolTipText = "Change the settings for the chart including year and title.";
+            optionsToolStripMenuItem.Click += OptionsToolStripMenuItemClick;
             // 
             // helpToolStripMenuItem
             // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.contentsToolStripMenuItem,
-            this.toolStripSeparator5,
-            this.aboutToolStripMenuItem} );
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size( 44, 20 );
-            this.helpToolStripMenuItem.Text = "&Help";
+            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { contentsToolStripMenuItem, toolStripSeparator5, aboutToolStripMenuItem });
+            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            helpToolStripMenuItem.Size = new System.Drawing.Size(74, 34);
+            helpToolStripMenuItem.Text = "&Help";
             // 
             // contentsToolStripMenuItem
             // 
-            this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size( 122, 22 );
-            this.contentsToolStripMenuItem.Text = "&Contents";
-            this.contentsToolStripMenuItem.ToolTipText = "Open the Help window on the Contents page.";
-            this.contentsToolStripMenuItem.Click += new System.EventHandler( this.ContentsToolStripMenuItemClick );
+            contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
+            contentsToolStripMenuItem.Size = new System.Drawing.Size(214, 40);
+            contentsToolStripMenuItem.Text = "&Contents";
+            contentsToolStripMenuItem.ToolTipText = "Open the Help window on the Contents page.";
+            contentsToolStripMenuItem.Click += ContentsToolStripMenuItemClick;
             // 
             // toolStripSeparator5
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size( 119, 6 );
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new System.Drawing.Size(211, 6);
             // 
             // aboutToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size( 122, 22 );
-            this.aboutToolStripMenuItem.Text = "&About...";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler( this.AboutToolStripMenuItemClick );
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new System.Drawing.Size(214, 40);
+            aboutToolStripMenuItem.Text = "&About...";
+            aboutToolStripMenuItem.Click += AboutToolStripMenuItemClick;
             // 
             // printDocument
             // 
-            this.printDocument.DocumentName = "YearChart document";
-            this.printDocument.PrintPage += new System.Drawing.Printing.PrintPageEventHandler( this.printDocument_PrintPage );
+            printDocument.DocumentName = "YearChart document";
+            printDocument.PrintPage += printDocument_PrintPage;
             // 
             // toolStripContainer
             // 
             // 
             // toolStripContainer.ContentPanel
             // 
-            this.toolStripContainer.ContentPanel.Controls.Add( this.yearChartPanel );
-            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size( 624, 386 );
-            this.toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripContainer.Location = new System.Drawing.Point( 0, 0 );
-            this.toolStripContainer.Name = "toolStripContainer";
-            this.toolStripContainer.Size = new System.Drawing.Size( 624, 410 );
-            this.toolStripContainer.TabIndex = 1;
-            this.toolStripContainer.Text = "toolStripContainer1";
+            toolStripContainer.ContentPanel.Controls.Add(yearChartPanel);
+            toolStripContainer.ContentPanel.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            toolStripContainer.ContentPanel.Size = new System.Drawing.Size(1248, 908);
+            toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            toolStripContainer.Location = new System.Drawing.Point(0, 0);
+            toolStripContainer.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            toolStripContainer.Name = "toolStripContainer";
+            toolStripContainer.Size = new System.Drawing.Size(1248, 946);
+            toolStripContainer.TabIndex = 1;
+            toolStripContainer.Text = "toolStripContainer1";
             // 
             // toolStripContainer.TopToolStripPanel
             // 
-            this.toolStripContainer.TopToolStripPanel.Controls.Add( this.menuStrip );
+            toolStripContainer.TopToolStripPanel.Controls.Add(menuStrip);
             // 
             // yearChartPanel
             // 
-            this.yearChartPanel.Abbreviate = false;
-            //this.yearChartPanel.BackColor = System.Drawing.Color.White;
-            //this.yearChartPanel.BlankColor = System.Drawing.Color.LightGray;
-            this.yearChartPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            //this.yearChartPanel.EndDate = new System.DateTime( 2011, 12, 31, 0, 0, 0, 0 );
-            this.yearChartPanel.ExtraColumns = new YearChart.Model.YearChartCell[0];
-            this.yearChartPanel.ExtraRows = new YearChart.Model.YearChartCell[0];
-            //this.yearChartPanel.HeadingColor = System.Drawing.Color.Yellow;
-            this.yearChartPanel.Location = new System.Drawing.Point( 0, 0 );
-            this.yearChartPanel.Name = "yearChartPanel";
-            this.helpProvider.SetShowHelp( this.yearChartPanel, true );
-            this.yearChartPanel.Size = new System.Drawing.Size( 624, 386 );
-            //this.yearChartPanel.StartDate = new System.DateTime( 2011, 1, 1, 0, 0, 0, 0 );
-            this.yearChartPanel.TabIndex = 0;
-            this.yearChartPanel.Title = "YearChart";
-            //this.yearChartPanel.WeekendColor = System.Drawing.Color.Orange;
-            //this.yearChartPanel.WeekStartDay = System.DayOfWeek.Monday;
-            //this.yearChartPanel.Year = 2011;
-            this.yearChartPanel.DoubleClick += new System.EventHandler( this.YearChartPanelDoubleClick );
+            yearChartPanel.BackColor = System.Drawing.Color.White;
+            yearChartPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            yearChartPanel.Location = new System.Drawing.Point(0, 0);
+            yearChartPanel.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            yearChartPanel.Name = "yearChartPanel";
+            helpProvider.SetShowHelp(yearChartPanel, true);
+            yearChartPanel.Size = new System.Drawing.Size(1248, 908);
+            yearChartPanel.TabIndex = 0;
+            yearChartPanel.DoubleClick += YearChartPanelDoubleClick;
             // 
             // helpProvider
             // 
-            this.helpProvider.HelpNamespace = "YearChart.chm";
+            helpProvider.HelpNamespace = "YearChart.chm";
             // 
             // pageSetupDialog
             // 
-            this.pageSetupDialog.Document = this.printDocument;
-            this.pageSetupDialog.EnableMetric = true;
+            pageSetupDialog.Document = printDocument;
+            pageSetupDialog.EnableMetric = true;
             // 
             // printPreviewDialog
             // 
-            this.printPreviewDialog.AutoScrollMargin = new System.Drawing.Size( 0, 0 );
-            this.printPreviewDialog.AutoScrollMinSize = new System.Drawing.Size( 0, 0 );
-            this.printPreviewDialog.ClientSize = new System.Drawing.Size( 400, 300 );
-            this.printPreviewDialog.Document = this.printDocument;
-            this.printPreviewDialog.Enabled = true;
-            this.printPreviewDialog.Icon = ((System.Drawing.Icon) (resources.GetObject( "printPreviewDialog.Icon" )));
-            this.printPreviewDialog.Name = "printPreviewDialog";
-            this.printPreviewDialog.ShowIcon = false;
-            this.printPreviewDialog.Visible = false;
+            printPreviewDialog.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            printPreviewDialog.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            printPreviewDialog.ClientSize = new System.Drawing.Size(400, 300);
+            printPreviewDialog.Document = printDocument;
+            printPreviewDialog.Enabled = true;
+            printPreviewDialog.Icon = (System.Drawing.Icon)resources.GetObject("printPreviewDialog.Icon");
+            printPreviewDialog.Name = "printPreviewDialog";
+            printPreviewDialog.ShowIcon = false;
+            printPreviewDialog.Visible = false;
             // 
             // printDialog
             // 
-            this.printDialog.Document = this.printDocument;
-            this.printDialog.UseEXDialog = true;
-            // 
-            // exportToHTMLToolStripMenuItem
-            // 
-            this.exportToHTMLToolStripMenuItem.Name = "exportToHTMLToolStripMenuItem";
-            this.exportToHTMLToolStripMenuItem.Size = new System.Drawing.Size( 157, 22 );
-            this.exportToHTMLToolStripMenuItem.Text = "Export to HTML";
-            this.exportToHTMLToolStripMenuItem.Click += new System.EventHandler( this.exportToHTMLToolStripMenuItem_Click );
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size( 154, 6 );
+            printDialog.Document = printDocument;
+            printDialog.UseEXDialog = false;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size( 624, 410 );
-            this.Controls.Add( this.toolStripContainer );
-            this.Icon = ((System.Drawing.Icon) (resources.GetObject( "$this.Icon" )));
-            this.MainMenuStrip = this.menuStrip;
-            this.Name = "MainForm";
-            this.Text = "Kajabity YearChart";
-            this.menuStrip.ResumeLayout( false );
-            this.menuStrip.PerformLayout();
-            this.toolStripContainer.ContentPanel.ResumeLayout( false );
-            this.toolStripContainer.TopToolStripPanel.ResumeLayout( false );
-            this.toolStripContainer.TopToolStripPanel.PerformLayout();
-            this.toolStripContainer.ResumeLayout( false );
-            this.toolStripContainer.PerformLayout();
-            this.ResumeLayout( false );
+            AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1248, 946);
+            Controls.Add(toolStripContainer);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStrip;
+            Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            Name = "MainForm";
+            Text = "Kajabity YearChart";
+            menuStrip.ResumeLayout(false);
+            menuStrip.PerformLayout();
+            toolStripContainer.ContentPanel.ResumeLayout(false);
+            toolStripContainer.TopToolStripPanel.ResumeLayout(false);
+            toolStripContainer.TopToolStripPanel.PerformLayout();
+            toolStripContainer.ResumeLayout(false);
+            toolStripContainer.PerformLayout();
+            ResumeLayout(false);
 
-		}
+        }
 
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem exportToHTMLToolStripMenuItem;

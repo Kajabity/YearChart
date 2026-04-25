@@ -24,7 +24,7 @@ using YearChart.Model;
 
 namespace YearChart
 {
-    class YearChartHtmlWriter
+    internal class YearChartHtmlWriter
     {
         private YearChartModel model;
 
