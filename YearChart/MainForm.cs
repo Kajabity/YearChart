@@ -46,22 +46,22 @@ namespace YearChart
             InitializeComponent();
 
             printDocument.DefaultPageSettings.Landscape = true;
-            printDocument.DefaultPageSettings.Margins = new Margins( 50, 50, 50, 50 );
+            printDocument.DefaultPageSettings.Margins = new Margins(50, 50, 50, 50);
         }
 
-        protected override void OnResize( EventArgs ev )
+        protected override void OnResize(EventArgs ev)
         {
-            base.OnResize( ev );
-            this.toolStripContainer.ContentPanel.Invalidate( ClientRectangle );
+            base.OnResize(ev);
+            this.toolStripContainer.ContentPanel.Invalidate(ClientRectangle);
         }
 
         private void doOptionsDialog()
         {
-            using( YearChartOptionsForm dialog = new YearChartOptionsForm() )
+            using (YearChartOptionsForm dialog = new YearChartOptionsForm())
             {
                 dialog.ChartTitle = yearChartPanel.Title;
                 dialog.IsWholeYear = yearChartPanel.IsWholeYear;
-                if( yearChartPanel.IsWholeYear )
+                if (yearChartPanel.IsWholeYear)
                 {
                     dialog.Year = yearChartPanel.Year;
                 }
@@ -77,13 +77,13 @@ namespace YearChart
                 dialog.Abbreviate = yearChartPanel.Abbreviate;
                 dialog.HeadingColor = yearChartPanel.HeadingColor;
 
-                DialogResult result = dialog.ShowDialog( this );
-                if( result == DialogResult.OK )
+                DialogResult result = dialog.ShowDialog(this);
+                if (result == DialogResult.OK)
                 {
                     yearChartPanel.Title = dialog.ChartTitle;
                     printDocument.DocumentName = dialog.ChartTitle;
 
-                    if( dialog.IsWholeYear )
+                    if (dialog.IsWholeYear)
                     {
                         yearChartPanel.Year = dialog.Year;
                     }
@@ -104,103 +104,43 @@ namespace YearChart
             }
         }
 
-        void PageSetupToolStripMenuItemClick( object sender, System.EventArgs e )
+        private void PageSetupToolStripMenuItemClick(object sender, System.EventArgs e)
         {
             pageSetupDialog.ShowDialog();
         }
 
-        void PrintPreviewToolStripMenuItemClick( object sender, System.EventArgs e )
+        private void PrintPreviewToolStripMenuItemClick(object sender, System.EventArgs e)
         {
             try
             {
                 printPreviewDialog.ShowDialog();
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                MessageBox.Show( "Failed to print YearChart:\n" + ex.Message, "YearChart", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                MessageBox.Show("Failed to print YearChart:\n" + ex.Message, "YearChart", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void printDocument_PrintPage( object sender, PrintPageEventArgs ev )
+        private void printDocument_PrintPage(object sender, PrintPageEventArgs ev)
         {
-            Debug.WriteLine( "PageBounds    " + ev.PageBounds );
-            Debug.WriteLine( "PrintableArea " + ev.PageSettings.PrintableArea );
-            Debug.WriteLine( "MarginBounds  " + ev.MarginBounds );
-            Debug.WriteLine( "Hard Margin   " + ev.PageSettings.HardMarginX + ", " + ev.PageSettings.HardMarginY + " Landscape? " + ev.PageSettings.Landscape );
-            Debug.WriteLine( "" );
+            Debug.WriteLine("PageBounds    " + ev.PageBounds);
+            Debug.WriteLine("PrintableArea " + ev.PageSettings.PrintableArea);
+            Debug.WriteLine("MarginBounds  " + ev.MarginBounds);
+            Debug.WriteLine("Hard Margin   " + ev.PageSettings.HardMarginX + ", " + ev.PageSettings.HardMarginY + " Landscape? " + ev.PageSettings.Landscape);
+            Debug.WriteLine("");
 
-            bool changedMargins = false;
-
-            int Left = ev.MarginBounds.Left;
-            int Top = ev.MarginBounds.Top;
-            int Right = ev.MarginBounds.Right;
-            int Bottom = ev.MarginBounds.Bottom;
-
-            int MinLeft;
-            int MinTop;
-            int MaxRight;
-            int MaxBottom;
-
-            if( ev.PageSettings.Landscape )
-            {
-                MinLeft = (int) ( ev.PageSettings.PrintableArea.Top + 0.5 );
-                MinTop = (int) ( ev.PageSettings.PrintableArea.Left + 0.5 );
-                MaxRight = (int) ( ev.PageSettings.PrintableArea.Bottom - 0.5 );
-                MaxBottom = (int) ( ev.PageSettings.PrintableArea.Right - 0.5 );
-            }
-            else
-            {
-                MinLeft = (int) ( ev.PageSettings.PrintableArea.Left + 0.5 );
-                MinTop = (int) ( ev.PageSettings.PrintableArea.Top + 0.5 );
-                MaxRight = (int) ( ev.PageSettings.PrintableArea.Right - 0.5 );
-                MaxBottom = (int) ( ev.PageSettings.PrintableArea.Bottom - 0.5 );
-            }
-
-            Debug.WriteLine( "Min Margins: Left " + MinLeft + ", Top " + MinTop + ", Right " + ( ev.PageBounds.Right - MaxRight ) + ", Bottom " + ( ev.PageBounds.Bottom - MaxBottom ) );
-
-            if( Left < MinLeft )
-            {
-                changedMargins = true;
-                Left = MinLeft;
-            }
-
-            if( Top < MinTop )
-            {
-                changedMargins = true;
-                Top = MinTop;
-            }
-
-            if( Right > MaxRight )
-            {
-                changedMargins = true;
-                Right = MaxRight;
-            }
-
-            if( Bottom > MaxBottom )
-            {
-                changedMargins = true;
-                Bottom = MaxBottom;
-            }
-
-            if( changedMargins )
-            {
-                printDocument.DefaultPageSettings.Margins = new Margins( Left, ( ev.PageBounds.Right - Right ), Top, ( ev.PageBounds.Bottom - Bottom ) );
-                Debug.WriteLine( "Adjusted Margins " + printDocument.DefaultPageSettings.Margins );
-                MessageBox.Show( "Page Margins set outside printable area - adjusted to fit.", "Kajabity YearChart" );
-            }
-
-            Rectangle MarginBounds = new Rectangle( Left, Top, ( Right - Left ), ( Bottom - Top ) );
+            Rectangle marginBounds = ev.MarginBounds;
 
             bool preview = printDocument.PrintController.IsPreview;
-            if( !preview )
+            if (!preview)
             {
-                MarginBounds.Offset( -(int) ev.PageSettings.HardMarginX, -(int) ev.PageSettings.HardMarginY );
+                marginBounds.Offset(-(int)ev.PageSettings.HardMarginX, -(int)ev.PageSettings.HardMarginY);
             }
 
-            Debug.WriteLine( "MarginBounds (2) " + MarginBounds + ": Changed? " + changedMargins + ": Preview? " + preview );
-            Debug.WriteLine( "" );
+            Debug.WriteLine("MarginBounds (2) " + marginBounds + ": Preview? " + preview);
+            Debug.WriteLine("");
 
-            yearChartPanel.Draw( ev.Graphics, MarginBounds );
+            yearChartPanel.Draw(ev.Graphics, marginBounds);
 
             //			Pen penMargin = new Pen( Color.Red );
             //			ev.Graphics.DrawRectangle( penMargin, MarginBounds );
@@ -210,54 +150,54 @@ namespace YearChart
             ev.HasMorePages = false;
         }
 
-        void PrintToolStripMenuItemClick( object sender, System.EventArgs e )
+        private void PrintToolStripMenuItemClick(object sender, System.EventArgs e)
         {
-            if( printDialog.ShowDialog() == DialogResult.OK )
+            if (printDialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
                     printDocument.Print();
                 }
-                catch( Exception ex )
+                catch (Exception ex)
                 {
-                    MessageBox.Show( "Failed to print YearChart:\n" + ex.Message, "YearChart", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    MessageBox.Show("Failed to print YearChart:\n" + ex.Message, "YearChart", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        void ExitToolStripMenuItemClick( object sender, System.EventArgs e )
+        private void ExitToolStripMenuItemClick(object sender, System.EventArgs e)
         {
             Close();
         }
 
-        void OptionsToolStripMenuItemClick( object sender, System.EventArgs e )
+        private void OptionsToolStripMenuItemClick(object sender, System.EventArgs e)
         {
             doOptionsDialog();
         }
 
-        void ContentsToolStripMenuItemClick( object sender, System.EventArgs e )
+        private void ContentsToolStripMenuItemClick(object sender, System.EventArgs e)
         {
-            Help.ShowHelp( this, "YearChart.chm", HelpNavigator.TableOfContents );
+            Help.ShowHelp(this, "YearChart.chm", HelpNavigator.TableOfContents);
         }
 
-        void IndexToolStripMenuItemClick( object sender, System.EventArgs e )
+        private void IndexToolStripMenuItemClick(object sender, System.EventArgs e)
         {
-            Help.ShowHelpIndex( this, "YearChart.chm" );
+            Help.ShowHelpIndex(this, "YearChart.chm");
         }
 
-        void SearchToolStripMenuItemClick( object sender, System.EventArgs e )
+        private void SearchToolStripMenuItemClick(object sender, System.EventArgs e)
         {
-            Help.ShowHelp( this, "YearChart.chm", HelpNavigator.Find );
+            Help.ShowHelp(this, "YearChart.chm", HelpNavigator.Find);
         }
 
-        void AboutToolStripMenuItemClick( object sender, System.EventArgs e )
+        private void AboutToolStripMenuItemClick(object sender, System.EventArgs e)
         {
             AboutForm dialog = new AboutForm();
 
-            DialogResult result = dialog.ShowDialog( this );
+            DialogResult result = dialog.ShowDialog(this);
         }
 
-        void YearChartPanelDoubleClick( object sender, EventArgs e )
+        private void YearChartPanelDoubleClick(object sender, EventArgs e)
         {
             doOptionsDialog();
         }
@@ -268,20 +208,20 @@ namespace YearChart
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void exportToHTMLToolStripMenuItem_Click( object sender, EventArgs e )
+        private void exportToHTMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using( SaveFileDialog dialog = new SaveFileDialog() )
+            using (SaveFileDialog dialog = new SaveFileDialog())
             {
                 dialog.DefaultExt = "html";
                 dialog.Filter = "HTML files (*.html, *.htm)|*.html;*.htm|All files (*.*)|*.*";
                 dialog.FileName = "YearChart.html";
 
-                DialogResult result = dialog.ShowDialog( this );
-                if( result == DialogResult.OK )
+                DialogResult result = dialog.ShowDialog(this);
+                if (result == DialogResult.OK)
                 {
-                    Debug.WriteLine( "Export as HTML to file: " + dialog.FileName );
+                    Debug.WriteLine("Export as HTML to file: " + dialog.FileName);
 
-                    SaveAsHtml( dialog.FileName );
+                    SaveAsHtml(dialog.FileName);
                 }
             }
         }
@@ -290,14 +230,14 @@ namespace YearChart
         /// Saves a copy of the YearChart in HTML format file.
         /// </summary>
         /// <param name="filename">The name and path of the HTML file to be written.</param>
-        private void SaveAsHtml( string filename )
+        private void SaveAsHtml(string filename)
         {
-            using( FileStream outStream = File.OpenWrite( filename ) )
+            using (FileStream outStream = File.OpenWrite(filename))
             {
-                outStream.SetLength( 0L );
+                outStream.SetLength(0L);
 
-                YearChartHtmlWriter writer = new YearChartHtmlWriter( yearChartPanel.Model );
-                writer.Write( outStream );
+                YearChartHtmlWriter writer = new YearChartHtmlWriter(yearChartPanel.Model);
+                writer.Write(outStream);
             }
         }
     }
