@@ -25,6 +25,7 @@
  */
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -37,7 +38,8 @@ namespace YearChart
 	/// </summary>
 	public partial class YearChartOptionsForm : Form
 	{
-		
+
+		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public string ChartTitle
 		{
 			get
@@ -49,7 +51,8 @@ namespace YearChart
 				textTitle.Text = value;
 			}
 		}
-		
+
+		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public int Year
 		{
 			get
@@ -66,6 +69,7 @@ namespace YearChart
 		/// This method tests if the date range represents a whole year - 1st January to 31st December.
 		/// Can be used to determine whether to select the 'Year' or 'Date Range' radio button.
 		/// </summary>
+		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public bool IsWholeYear
 		{
 			get
@@ -79,6 +83,7 @@ namespace YearChart
 			}
 		}
 
+		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public DateTime StartDate
 		{
 			get
@@ -91,6 +96,7 @@ namespace YearChart
 			}
 		}
 
+		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public DateTime EndDate
 		{
 			get
@@ -103,6 +109,7 @@ namespace YearChart
 			}
 		}
 
+		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public bool Abbreviate
 		{
 			get
@@ -117,6 +124,7 @@ namespace YearChart
 
 		public ArrayList extraRows = new ArrayList();
 
+		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public YearChartCell[] ExtraRows
 		{
 			get
@@ -148,6 +156,7 @@ namespace YearChart
 
 		public ArrayList extraColumns = new ArrayList();
 
+		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public YearChartCell[] ExtraColumns
 		{
 			get
@@ -179,12 +188,14 @@ namespace YearChart
 		
 		private Color m_colorHeading = Color.Yellow;
 		
+		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public Color HeadingColor
 		{
 			get { return m_colorHeading; }
 			set { m_colorHeading = value; Invalidate(); }
 		}
 
+		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public DayOfWeek WeekStartDay
 		{
 			get

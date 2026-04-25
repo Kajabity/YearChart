@@ -24,6 +24,7 @@
  * Date: 10/01/2009
  */
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -71,6 +72,7 @@ namespace YearChart
         }
 
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public DayOfWeek WeekStartDay
         {
             get
@@ -83,6 +85,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public int Year
         {
             get { return model.Year; }
@@ -97,6 +100,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public DateTime StartDate
         {
             get
@@ -109,6 +113,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public DateTime EndDate
         {
             get
@@ -121,6 +126,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public bool Abbreviate
         {
             get
@@ -133,6 +139,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public string Title
         {
             get { return model.Title; }
@@ -141,6 +148,7 @@ namespace YearChart
 
         private Color m_colorHeading = Color.Yellow;
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public Color HeadingColor
         {
             get { return m_colorHeading; }
@@ -149,6 +157,7 @@ namespace YearChart
 
         private Color m_colorWeekend = Color.Orange;
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public Color WeekendColor
         {
             get { return m_colorWeekend; }
@@ -157,12 +166,14 @@ namespace YearChart
 
         private Color m_colorBlank = Color.LightGray;
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public Color BlankColor
         {
             get { return m_colorBlank; }
             set { m_colorBlank = value; Invalidate(); }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public YearChartCell[] ExtraRows
         {
             get
@@ -176,6 +187,7 @@ namespace YearChart
             }
         }
 
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public YearChartCell[] ExtraColumns
         {
             get

@@ -21,7 +21,7 @@ Current Status
 * Windows-only desktop application.
 * WinForms application with a WiX installer project.
 * GitHub Actions workflows for build, secret scanning, vulnerability scanning, and dependency update automation.
-* The current codebase builds with the .NET 8 SDK.
+* The current codebase builds with the .NET 10 SDK.
 
 Build
 -----
