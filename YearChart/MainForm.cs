@@ -59,6 +59,8 @@ namespace YearChart
         {
             using (YearChartOptionsForm dialog = new YearChartOptionsForm())
             {
+                YearChartPanel yearChartPanel = yearChartHost.ChartPanel;
+
                 dialog.ChartTitle = yearChartPanel.Title;
                 dialog.IsWholeYear = yearChartPanel.IsWholeYear;
                 if (yearChartPanel.IsWholeYear)
@@ -99,7 +101,8 @@ namespace YearChart
                     yearChartPanel.Abbreviate = dialog.Abbreviate;
 
                     yearChartPanel.Calculate();
-                    this.Invalidate();
+                    yearChartHost.Invalidate(true);
+                    statusLabel.Text = "Ready";
                 }
             }
         }
@@ -140,7 +143,7 @@ namespace YearChart
             Debug.WriteLine("MarginBounds (2) " + marginBounds + ": Preview? " + preview);
             Debug.WriteLine("");
 
-            yearChartPanel.Draw(ev.Graphics, marginBounds);
+            yearChartHost.Draw(ev.Graphics, marginBounds);
 
             //			Pen penMargin = new Pen( Color.Red );
             //			ev.Graphics.DrawRectangle( penMargin, MarginBounds );
@@ -197,9 +200,17 @@ namespace YearChart
             DialogResult result = dialog.ShowDialog(this);
         }
 
-        private void YearChartPanelDoubleClick(object sender, EventArgs e)
+        private void YearChartHostChartDoubleClick(object sender, EventArgs e)
         {
             doOptionsDialog();
+        }
+
+        private void StretchViewToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            yearChartHost.ViewMode = ChartViewMode.Stretch;
+            stretchViewToolStripMenuItem.Checked = true;
+            viewDropDownButton.Text = "Stretch";
+            statusLabel.Text = "View: Stretch";
         }
 
         /// <summary>
@@ -236,7 +247,7 @@ namespace YearChart
             {
                 outStream.SetLength(0L);
 
-                YearChartHtmlWriter writer = new YearChartHtmlWriter(yearChartPanel.Model);
+                YearChartHtmlWriter writer = new YearChartHtmlWriter(yearChartHost.ChartPanel.Model);
                 writer.Write(outStream);
             }
         }
