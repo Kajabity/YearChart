@@ -186,6 +186,9 @@ App_Data/*.ldf
 # Microsoft Fakes
 FakesAssemblies/
 
+# Obisidian - not yet.
+.obsidian/
+
 # =========================
 # Windows detritus
 # =========================

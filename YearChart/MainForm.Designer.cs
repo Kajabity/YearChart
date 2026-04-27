@@ -34,7 +34,7 @@ namespace YearChart
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
 
-		private YearChart.YearChartPanel yearChartPanel;
+		private YearChart.YearChartHost yearChartHost;
 		
 		private System.Windows.Forms.PrintDialog printDialog;
 		private System.Windows.Forms.PrintPreviewDialog printPreviewDialog;
@@ -56,6 +56,10 @@ namespace YearChart
 		private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
 		private System.Windows.Forms.HelpProvider helpProvider;
 		private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.ToolStripDropDownButton viewDropDownButton;
+        private System.Windows.Forms.ToolStripMenuItem stretchViewToolStripMenuItem;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -96,13 +100,19 @@ namespace YearChart
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             printDocument = new System.Drawing.Printing.PrintDocument();
             toolStripContainer = new System.Windows.Forms.ToolStripContainer();
-            yearChartPanel = new YearChartPanel();
+            yearChartHost = new YearChartHost();
+            statusStrip = new System.Windows.Forms.StatusStrip();
+            statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            viewDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
+            stretchViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             helpProvider = new System.Windows.Forms.HelpProvider();
             pageSetupDialog = new System.Windows.Forms.PageSetupDialog();
             printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
             printDialog = new System.Windows.Forms.PrintDialog();
             menuStrip.SuspendLayout();
+            statusStrip.SuspendLayout();
             toolStripContainer.ContentPanel.SuspendLayout();
+            toolStripContainer.BottomToolStripPanel.SuspendLayout();
             toolStripContainer.TopToolStripPanel.SuspendLayout();
             toolStripContainer.SuspendLayout();
             SuspendLayout();
@@ -226,14 +236,55 @@ namespace YearChart
             printDocument.DocumentName = "YearChart document";
             printDocument.PrintPage += printDocument_PrintPage;
             // 
+            // statusStrip
+            // 
+            statusStrip.Dock = System.Windows.Forms.DockStyle.None;
+            statusStrip.ImageScalingSize = new System.Drawing.Size(28, 28);
+            statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { statusLabel, viewDropDownButton });
+            statusStrip.Location = new System.Drawing.Point(0, 0);
+            statusStrip.Name = "statusStrip";
+            statusStrip.Size = new System.Drawing.Size(1248, 40);
+            statusStrip.TabIndex = 0;
+            statusStrip.Text = "statusStrip";
+            // 
+            // statusLabel
+            // 
+            statusLabel.Name = "statusLabel";
+            statusLabel.Size = new System.Drawing.Size(1122, 31);
+            statusLabel.Spring = true;
+            statusLabel.Text = "Ready";
+            statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // viewDropDownButton
+            // 
+            viewDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            viewDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { stretchViewToolStripMenuItem });
+            viewDropDownButton.Name = "viewDropDownButton";
+            viewDropDownButton.Size = new System.Drawing.Size(111, 34);
+            viewDropDownButton.Text = "Stretch";
+            viewDropDownButton.ToolTipText = "Select chart view";
+            // 
+            // stretchViewToolStripMenuItem
+            // 
+            stretchViewToolStripMenuItem.Checked = true;
+            stretchViewToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            stretchViewToolStripMenuItem.Name = "stretchViewToolStripMenuItem";
+            stretchViewToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            stretchViewToolStripMenuItem.Text = "Stretch";
+            stretchViewToolStripMenuItem.Click += StretchViewToolStripMenuItemClick;
+            // 
             // toolStripContainer
             // 
             // 
+            // toolStripContainer.BottomToolStripPanel
+            // 
+            toolStripContainer.BottomToolStripPanel.Controls.Add(statusStrip);
+            // 
             // toolStripContainer.ContentPanel
             // 
-            toolStripContainer.ContentPanel.Controls.Add(yearChartPanel);
+            toolStripContainer.ContentPanel.Controls.Add(yearChartHost);
             toolStripContainer.ContentPanel.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
-            toolStripContainer.ContentPanel.Size = new System.Drawing.Size(1248, 908);
+            toolStripContainer.ContentPanel.Size = new System.Drawing.Size(1248, 868);
             toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             toolStripContainer.Location = new System.Drawing.Point(0, 0);
             toolStripContainer.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
@@ -246,17 +297,17 @@ namespace YearChart
             // 
             toolStripContainer.TopToolStripPanel.Controls.Add(menuStrip);
             // 
-            // yearChartPanel
+            // yearChartHost
             // 
-            yearChartPanel.BackColor = System.Drawing.Color.White;
-            yearChartPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            yearChartPanel.Location = new System.Drawing.Point(0, 0);
-            yearChartPanel.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
-            yearChartPanel.Name = "yearChartPanel";
-            helpProvider.SetShowHelp(yearChartPanel, true);
-            yearChartPanel.Size = new System.Drawing.Size(1248, 908);
-            yearChartPanel.TabIndex = 0;
-            yearChartPanel.DoubleClick += YearChartPanelDoubleClick;
+            yearChartHost.BackColor = System.Drawing.Color.White;
+            yearChartHost.Dock = System.Windows.Forms.DockStyle.Fill;
+            yearChartHost.Location = new System.Drawing.Point(0, 0);
+            yearChartHost.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            yearChartHost.Name = "yearChartHost";
+            helpProvider.SetShowHelp(yearChartHost, true);
+            yearChartHost.Size = new System.Drawing.Size(1248, 868);
+            yearChartHost.TabIndex = 0;
+            yearChartHost.ChartDoubleClick += YearChartHostChartDoubleClick;
             // 
             // helpProvider
             // 
@@ -297,7 +348,11 @@ namespace YearChart
             Text = "Kajabity YearChart";
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
+            statusStrip.ResumeLayout(false);
+            statusStrip.PerformLayout();
             toolStripContainer.ContentPanel.ResumeLayout(false);
+            toolStripContainer.BottomToolStripPanel.ResumeLayout(false);
+            toolStripContainer.BottomToolStripPanel.PerformLayout();
             toolStripContainer.TopToolStripPanel.ResumeLayout(false);
             toolStripContainer.TopToolStripPanel.PerformLayout();
             toolStripContainer.ResumeLayout(false);

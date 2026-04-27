@@ -83,14 +83,7 @@ namespace YearChart
                 writer.WriteLine( "	<div id=\"link\"><a href=\"http://www.kajabity.com\">www.kajabity.com</a></div>" );
                 writer.WriteLine( "	<div id=\"title\"><h1>" + model.Title + "</h1></div>" );
 
-                //TODO: This is common code - need to extract into a shared class.
-                string year = model.Year.ToString();
-                if( model.EndDate.Year > model.StartDate.Year )
-                {
-                    year = year + "-" + model.EndDate.Year;
-                }
-
-                writer.WriteLine( "	<div id=\"year\">" + year + "</div>" );
+                writer.WriteLine( "	<div id=\"year\">" + YearChartDisplayText.GetYearText( model ) + "</div>" );
                 writer.WriteLine( "</div>" );
                 writer.WriteLine( "<table>" );
 
