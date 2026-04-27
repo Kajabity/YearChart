@@ -38,6 +38,8 @@ namespace YearChart
     /// </summary>
     public partial class MainForm : Form
     {
+        private MainWindowSettings mainWindowSettings;
+
         public MainForm()
         {
             //
@@ -47,12 +49,74 @@ namespace YearChart
 
             printDocument.DefaultPageSettings.Landscape = true;
             printDocument.DefaultPageSettings.Margins = new Margins(50, 50, 50, 50);
+
+            RestoreMainWindowSettings();
         }
 
         protected override void OnResize(EventArgs ev)
         {
             base.OnResize(ev);
             this.toolStripContainer.ContentPanel.Invalidate(ClientRectangle);
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            SaveMainWindowSettings();
+            base.OnFormClosing(e);
+        }
+
+        private void RestoreMainWindowSettings()
+        {
+            mainWindowSettings = MainWindowSettings.Load();
+
+            if (!mainWindowSettings.HasBounds)
+            {
+                return;
+            }
+
+            Rectangle bounds = EnsureVisibleBounds(mainWindowSettings.Bounds);
+
+            StartPosition = FormStartPosition.Manual;
+            Bounds = bounds;
+
+            if (mainWindowSettings.WindowState == FormWindowState.Maximized)
+            {
+                WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                WindowState = FormWindowState.Normal;
+            }
+        }
+
+        private void SaveMainWindowSettings()
+        {
+            if (mainWindowSettings == null)
+            {
+                mainWindowSettings = new MainWindowSettings();
+            }
+
+            mainWindowSettings.Bounds = WindowState == FormWindowState.Normal ? Bounds : RestoreBounds;
+            mainWindowSettings.WindowState = WindowState == FormWindowState.Minimized ? FormWindowState.Normal : WindowState;
+            mainWindowSettings.Save();
+        }
+
+        private static Rectangle EnsureVisibleBounds(Rectangle bounds)
+        {
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                if (screen.WorkingArea.IntersectsWith(bounds))
+                {
+                    return bounds;
+                }
+            }
+
+            Rectangle workingArea = Screen.PrimaryScreen.WorkingArea;
+            Size size = new Size(
+                Math.Min(bounds.Width, workingArea.Width),
+                Math.Min(bounds.Height, workingArea.Height));
+
+            return new Rectangle(workingArea.Location, size);
         }
 
         private void doOptionsDialog()
