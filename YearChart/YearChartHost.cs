@@ -64,9 +64,9 @@ namespace YearChart
 
         public event EventHandler ChartDoubleClick;
 
-        public void Draw(Graphics graphics, Rectangle bounds)
+        public YearChartLayout Draw(Graphics graphics, Rectangle bounds)
         {
-            yearChartPanel.Draw(graphics, bounds);
+            return yearChartPanel.Draw(graphics, bounds);
         }
 
         private void ApplyViewMode()
