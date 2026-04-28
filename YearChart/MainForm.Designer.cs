@@ -44,6 +44,9 @@ namespace YearChart
 		private System.Windows.Forms.ToolStripContainer toolStripContainer;
 		private System.Windows.Forms.ToolStripMenuItem pageSetupToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem fitWindowToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem printLayoutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem contentsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
@@ -58,8 +61,8 @@ namespace YearChart
 		private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
-        private System.Windows.Forms.ToolStripDropDownButton viewDropDownButton;
-        private System.Windows.Forms.ToolStripMenuItem stretchViewToolStripMenuItem;
+        private YearChart.ChartViewToolStripButton stretchViewButton;
+        private YearChart.ChartViewToolStripButton pageLayoutViewButton;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -92,6 +95,9 @@ namespace YearChart
             exportToHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fitWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            printLayoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -103,8 +109,8 @@ namespace YearChart
             yearChartHost = new YearChartHost();
             statusStrip = new System.Windows.Forms.StatusStrip();
             statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            viewDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-            stretchViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            stretchViewButton = new YearChart.ChartViewToolStripButton();
+            pageLayoutViewButton = new YearChart.ChartViewToolStripButton();
             helpProvider = new System.Windows.Forms.HelpProvider();
             pageSetupDialog = new System.Windows.Forms.PageSetupDialog();
             printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
@@ -121,7 +127,7 @@ namespace YearChart
             // 
             menuStrip.Dock = System.Windows.Forms.DockStyle.None;
             menuStrip.ImageScalingSize = new System.Drawing.Size(28, 28);
-            menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, toolsToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, viewToolStripMenuItem, toolsToolStripMenuItem, helpToolStripMenuItem });
             menuStrip.Location = new System.Drawing.Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new System.Drawing.Size(1248, 38);
@@ -189,6 +195,29 @@ namespace YearChart
             exitToolStripMenuItem.ToolTipText = "Closes the appliction.";
             exitToolStripMenuItem.Click += ExitToolStripMenuItemClick;
             // 
+            // viewToolStripMenuItem
+            // 
+            viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { fitWindowToolStripMenuItem, printLayoutToolStripMenuItem });
+            viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            viewToolStripMenuItem.Size = new System.Drawing.Size(74, 34);
+            viewToolStripMenuItem.Text = "&View";
+            // 
+            // fitWindowToolStripMenuItem
+            // 
+            fitWindowToolStripMenuItem.Checked = true;
+            fitWindowToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            fitWindowToolStripMenuItem.Name = "fitWindowToolStripMenuItem";
+            fitWindowToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            fitWindowToolStripMenuItem.Text = "&Fit Window";
+            fitWindowToolStripMenuItem.Click += FitWindowToolStripMenuItemClick;
+            // 
+            // printLayoutToolStripMenuItem
+            // 
+            printLayoutToolStripMenuItem.Name = "printLayoutToolStripMenuItem";
+            printLayoutToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            printLayoutToolStripMenuItem.Text = "&Print Layout";
+            printLayoutToolStripMenuItem.Click += PrintLayoutToolStripMenuItemClick;
+            // 
             // toolsToolStripMenuItem
             // 
             toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { optionsToolStripMenuItem });
@@ -240,7 +269,7 @@ namespace YearChart
             // 
             statusStrip.Dock = System.Windows.Forms.DockStyle.None;
             statusStrip.ImageScalingSize = new System.Drawing.Size(28, 28);
-            statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { statusLabel, viewDropDownButton });
+            statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { statusLabel, stretchViewButton, pageLayoutViewButton });
             statusStrip.Location = new System.Drawing.Point(0, 0);
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new System.Drawing.Size(1248, 40);
@@ -255,23 +284,27 @@ namespace YearChart
             statusLabel.Text = "Ready";
             statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // viewDropDownButton
+            // stretchViewButton
             // 
-            viewDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            viewDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { stretchViewToolStripMenuItem });
-            viewDropDownButton.Name = "viewDropDownButton";
-            viewDropDownButton.Size = new System.Drawing.Size(111, 34);
-            viewDropDownButton.Text = "Stretch";
-            viewDropDownButton.ToolTipText = "Select chart view";
+            stretchViewButton.Checked = true;
+            stretchViewButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            stretchViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
+            stretchViewButton.Icon = YearChart.ChartViewButtonIcon.StretchToFit;
+            stretchViewButton.Name = "stretchViewButton";
+            stretchViewButton.Size = new System.Drawing.Size(32, 34);
+            stretchViewButton.Text = "Stretch to Fit";
+            stretchViewButton.ToolTipText = "Stretch to Fit";
+            stretchViewButton.Click += StretchViewButtonClick;
             // 
-            // stretchViewToolStripMenuItem
+            // pageLayoutViewButton
             // 
-            stretchViewToolStripMenuItem.Checked = true;
-            stretchViewToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            stretchViewToolStripMenuItem.Name = "stretchViewToolStripMenuItem";
-            stretchViewToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
-            stretchViewToolStripMenuItem.Text = "Stretch";
-            stretchViewToolStripMenuItem.Click += StretchViewToolStripMenuItemClick;
+            pageLayoutViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
+            pageLayoutViewButton.Icon = YearChart.ChartViewButtonIcon.PageLayout;
+            pageLayoutViewButton.Name = "pageLayoutViewButton";
+            pageLayoutViewButton.Size = new System.Drawing.Size(32, 34);
+            pageLayoutViewButton.Text = "Page Layout";
+            pageLayoutViewButton.ToolTipText = "Page Layout";
+            pageLayoutViewButton.Click += PageLayoutViewButtonClick;
             // 
             // toolStripContainer
             // 

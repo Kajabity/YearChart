@@ -22,6 +22,7 @@ namespace YearChart
 {
     public enum ChartViewMode
     {
-        Stretch
+        Stretch,
+        PageLayout
     }
 }

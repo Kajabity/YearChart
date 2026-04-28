@@ -49,6 +49,7 @@ namespace YearChart
 
             printDocument.DefaultPageSettings.Landscape = true;
             printDocument.DefaultPageSettings.Margins = new Margins(50, 50, 50, 50);
+            yearChartHost.PageSettings = printDocument.DefaultPageSettings;
 
             RestoreMainWindowSettings();
         }
@@ -165,7 +166,7 @@ namespace YearChart
                     yearChartPanel.Abbreviate = dialog.Abbreviate;
 
                     yearChartPanel.Calculate();
-                    yearChartHost.Invalidate(true);
+                    yearChartHost.InvalidateChart();
                     statusLabel.Text = "Ready";
                 }
             }
@@ -173,7 +174,10 @@ namespace YearChart
 
         private void PageSetupToolStripMenuItemClick(object sender, System.EventArgs e)
         {
-            pageSetupDialog.ShowDialog();
+            if (pageSetupDialog.ShowDialog() == DialogResult.OK)
+            {
+                yearChartHost.PageSettings = printDocument.DefaultPageSettings;
+            }
         }
 
         private void PrintPreviewToolStripMenuItemClick(object sender, System.EventArgs e)
@@ -269,12 +273,39 @@ namespace YearChart
             doOptionsDialog();
         }
 
-        private void StretchViewToolStripMenuItemClick(object sender, EventArgs e)
+        private void StretchViewButtonClick(object sender, EventArgs e)
         {
-            yearChartHost.ViewMode = ChartViewMode.Stretch;
-            stretchViewToolStripMenuItem.Checked = true;
-            viewDropDownButton.Text = "Stretch";
-            statusLabel.Text = "View: Stretch";
+            SelectView(ChartViewMode.Stretch);
+        }
+
+        private void PageLayoutViewButtonClick(object sender, EventArgs e)
+        {
+            SelectView(ChartViewMode.PageLayout);
+        }
+
+        private void FitWindowToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            SelectView(ChartViewMode.Stretch);
+        }
+
+        private void PrintLayoutToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            SelectView(ChartViewMode.PageLayout);
+        }
+
+        private void SelectView(ChartViewMode viewMode)
+        {
+            if (viewMode == ChartViewMode.PageLayout)
+            {
+                yearChartHost.PageSettings = printDocument.DefaultPageSettings;
+            }
+
+            yearChartHost.ViewMode = viewMode;
+            stretchViewButton.Checked = viewMode == ChartViewMode.Stretch;
+            pageLayoutViewButton.Checked = viewMode == ChartViewMode.PageLayout;
+            fitWindowToolStripMenuItem.Checked = viewMode == ChartViewMode.Stretch;
+            printLayoutToolStripMenuItem.Checked = viewMode == ChartViewMode.PageLayout;
+            statusLabel.Text = viewMode == ChartViewMode.Stretch ? "View: Stretch to Fit" : "View: Page Layout";
         }
 
         /// <summary>
