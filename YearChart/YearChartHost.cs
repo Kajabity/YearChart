@@ -27,47 +27,42 @@ using System.Windows.Forms;
 
 namespace YearChart
 {
-    public class YearChartHost : UserControl
+    public sealed class YearChartHost : UserControl
     {
         private const int PageWorkspacePadding = 24;
         private const int PageShadowOffset = 5;
         private const float MinimumZoom = 0.10f;
         private const float MaximumZoom = 4.00f;
 
-        private readonly YearChartPanel yearChartPanel;
         private ChartViewMode viewMode = ChartViewMode.Stretch;
         private PageSettings pageSettings;
+        private SizeF pageSize;
         private float pageLayoutZoom = 1.0f;
         private bool pageLayoutZoomExplicit;
-        private Bitmap pageLayoutImage;
-        private Size pageLayoutImagePageSize;
-        private Margins pageLayoutImageMargins;
 
         public YearChartHost()
         {
-            yearChartPanel = new YearChartPanel();
-            yearChartPanel.Dock = DockStyle.Fill;
-            yearChartPanel.DoubleClick += YearChartPanelDoubleClick;
+            ChartPanel = new YearChartPanel();
+            ChartPanel.Dock = DockStyle.Fill;
+            ChartPanel.DoubleClick += YearChartPanelDoubleClick;
 
             AutoScroll = true;
             BackColor = Color.FromArgb(240, 240, 240);
             pageSettings = new PageSettings();
+            pageSize = CalculatePageSize(pageSettings);
             TabStop = true;
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
 
-            Controls.Add(yearChartPanel);
+            Controls.Add(ChartPanel);
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public YearChartPanel ChartPanel
-        {
-            get { return yearChartPanel; }
-        }
+        public YearChartPanel ChartPanel { get; }
 
         [DefaultValue(ChartViewMode.Stretch)]
         public ChartViewMode ViewMode
         {
-            get { return viewMode; }
+            get => viewMode;
             set
             {
                 if (viewMode == value)
@@ -83,12 +78,12 @@ namespace YearChart
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PageSettings PageSettings
         {
-            get { return pageSettings; }
+            get => pageSettings;
             set
             {
                 pageSettings = value == null ? new PageSettings() : (PageSettings)value.Clone();
+                pageSize = CalculatePageSize(pageSettings);
                 pageLayoutZoomExplicit = false;
-                ClearPageLayoutImage();
                 ApplyPageLayoutSize();
                 Invalidate();
             }
@@ -98,7 +93,7 @@ namespace YearChart
 
         public YearChartLayout Draw(Graphics graphics, Rectangle bounds)
         {
-            return yearChartPanel.Draw(graphics, bounds);
+            return ChartPanel.Draw(graphics, bounds);
         }
 
         public void ZoomPageLayoutToFit()
@@ -110,8 +105,7 @@ namespace YearChart
 
         public void InvalidateChart()
         {
-            ClearPageLayoutImage();
-            yearChartPanel.Invalidate();
+            ChartPanel.Invalidate();
             Invalidate();
         }
 
@@ -121,15 +115,14 @@ namespace YearChart
             {
                 AutoScrollMinSize = Size.Empty;
                 BackColor = Color.White;
-                yearChartPanel.Visible = true;
-                yearChartPanel.Dock = DockStyle.Fill;
+                ChartPanel.Visible = true;
+                ChartPanel.Dock = DockStyle.Fill;
             }
             else
             {
                 BackColor = Color.FromArgb(240, 240, 240);
-                yearChartPanel.Dock = DockStyle.None;
-                yearChartPanel.Visible = false;
-                ClearPageLayoutImage();
+                ChartPanel.Dock = DockStyle.None;
+                ChartPanel.Visible = false;
                 ApplyPageLayoutSize();
             }
 
@@ -143,14 +136,12 @@ namespace YearChart
                 return;
             }
 
-            SizeF pageSize = GetPageSize();
-
             if (!pageLayoutZoomExplicit)
             {
                 pageLayoutZoom = CalculateFitZoom(pageSize);
             }
 
-            Size displaySize = ScaleSize(pageSize, pageLayoutZoom);
+            var displaySize = ScaleSize(pageSize, pageLayoutZoom);
             AutoScrollMinSize = new Size(
                 displaySize.Width + (PageWorkspacePadding * 2) + PageShadowOffset,
                 displaySize.Height + (PageWorkspacePadding * 2) + PageShadowOffset);
@@ -158,24 +149,19 @@ namespace YearChart
 
         private float CalculateFitZoom(SizeF pageSize)
         {
-            int availableWidth = Math.Max(1, ClientSize.Width - (PageWorkspacePadding * 2) - PageShadowOffset);
-            int availableHeight = Math.Max(1, ClientSize.Height - (PageWorkspacePadding * 2) - PageShadowOffset);
-            float zoom = Math.Min(availableWidth / pageSize.Width, availableHeight / pageSize.Height);
+            var availableWidth = Math.Max(1, ClientSize.Width - (PageWorkspacePadding * 2) - PageShadowOffset);
+            var availableHeight = Math.Max(1, ClientSize.Height - (PageWorkspacePadding * 2) - PageShadowOffset);
+            var zoom = Math.Min(availableWidth / pageSize.Width, availableHeight / pageSize.Height);
 
             return Math.Max(MinimumZoom, Math.Min(MaximumZoom, zoom));
         }
 
-        private SizeF GetPageSize()
+        private static SizeF CalculatePageSize(PageSettings settings)
         {
-            int width = pageSettings.PaperSize.Width;
-            int height = pageSettings.PaperSize.Height;
+            var width = settings.PaperSize.Width;
+            var height = settings.PaperSize.Height;
 
-            if (pageSettings.Landscape && width < height)
-            {
-                return new SizeF(height, width);
-            }
-
-            if (!pageSettings.Landscape && width > height)
+            if (settings.Landscape && width < height || !settings.Landscape && width > height)
             {
                 return new SizeF(height, width);
             }
@@ -183,22 +169,13 @@ namespace YearChart
             return new SizeF(width, height);
         }
 
-        private Size GetPagePixelSize()
-        {
-            SizeF pageSize = GetPageSize();
-
-            return new Size(
-                Math.Max(1, (int)Math.Round(pageSize.Width)),
-                Math.Max(1, (int)Math.Round(pageSize.Height)));
-        }
-
         private RectangleF GetMarginBounds(SizeF pageSize)
         {
-            Margins margins = pageSettings.Margins;
-            float left = Math.Min(margins.Left, pageSize.Width);
-            float top = Math.Min(margins.Top, pageSize.Height);
-            float right = Math.Min(margins.Right, pageSize.Width - left);
-            float bottom = Math.Min(margins.Bottom, pageSize.Height - top);
+            var margins = pageSettings.Margins;
+            var left = Math.Min(margins.Left, pageSize.Width);
+            var top = Math.Min(margins.Top, pageSize.Height);
+            var right = Math.Min(margins.Right, pageSize.Width - left);
+            var bottom = Math.Min(margins.Bottom, pageSize.Height - top);
 
             return new RectangleF(
                 left,
@@ -216,27 +193,42 @@ namespace YearChart
 
         protected override void OnPaint(PaintEventArgs e)
         {
+#if DEBUG
+            var start = YearChartDiagnostics.StartTimer();
+#endif
             base.OnPaint(e);
 
             if (viewMode != ChartViewMode.PageLayout)
             {
+#if DEBUG
+                YearChartDiagnostics.WriteElapsed("host paint (stretch)", start);
+#endif
                 return;
             }
 
             DrawPageLayout(e.Graphics);
+#if DEBUG
+            YearChartDiagnostics.WriteElapsed("host paint (page layout)", start);
+#endif
         }
 
         private void DrawPageLayout(Graphics graphics)
         {
+#if DEBUG
+            var start = YearChartDiagnostics.StartTimer();
+            var backgroundStart = YearChartDiagnostics.StartTimer();
+#endif
             graphics.Clear(BackColor);
-            graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            graphics.SmoothingMode = SmoothingMode.None;
+#if DEBUG
+            var backgroundMilliseconds = YearChartDiagnostics.GetElapsedMilliseconds(backgroundStart);
 
-            SizeF pageSize = GetPageSize();
-            Bitmap pageImage = GetPageLayoutImage();
-            Size displaySize = ScaleSize(pageSize, pageLayoutZoom);
-            Point scrollOffset = AutoScrollPosition;
-            int x = PageWorkspacePadding + scrollOffset.X;
-            int y = PageWorkspacePadding + scrollOffset.Y;
+            var setupStart = YearChartDiagnostics.StartTimer();
+#endif
+            var displaySize = ScaleSize(pageSize, pageLayoutZoom);
+            var scrollOffset = AutoScrollPosition;
+            var x = PageWorkspacePadding + scrollOffset.X;
+            var y = PageWorkspacePadding + scrollOffset.Y;
 
             if (displaySize.Width < ClientSize.Width - (PageWorkspacePadding * 2))
             {
@@ -248,79 +240,82 @@ namespace YearChart
                 y = (ClientSize.Height - displaySize.Height) / 2;
             }
 
-            Rectangle shadowBounds = new Rectangle(
+            var shadowBounds = new Rectangle(
                 x + PageShadowOffset,
                 y + PageShadowOffset,
                 displaySize.Width,
                 displaySize.Height);
-            Rectangle pageBounds = new Rectangle(x, y, displaySize.Width, displaySize.Height);
+            var pageBounds = new Rectangle(x, y, displaySize.Width, displaySize.Height);
+#if DEBUG
+            var setupMilliseconds = YearChartDiagnostics.GetElapsedMilliseconds(setupStart);
 
-            using (Brush shadowBrush = new SolidBrush(Color.FromArgb(80, 0, 0, 0)))
-            using (Pen pageBorderPen = new Pen(Color.FromArgb(160, 160, 160)))
-            {
-                graphics.FillRectangle(shadowBrush, shadowBounds);
-                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
-                graphics.PixelOffsetMode = PixelOffsetMode.Half;
-                graphics.DrawImage(pageImage, pageBounds);
-                graphics.DrawRectangle(pageBorderPen, pageBounds);
-            }
+            var resourceStart = YearChartDiagnostics.StartTimer();
+            var decorationStart = YearChartDiagnostics.StartTimer();
+#endif
+            using Brush shadowBrush = new SolidBrush(Color.FromArgb(190, 190, 190));
+            using Brush pageBrush = new SolidBrush(Color.White);
+            using var pageBorderPen = new Pen(Color.FromArgb(160, 160, 160));
+#if DEBUG
+            var resourceMilliseconds = YearChartDiagnostics.GetElapsedMilliseconds(resourceStart);
+#endif
+            graphics.FillRectangle(shadowBrush, shadowBounds);
+            graphics.FillRectangle(pageBrush, pageBounds);
+#if DEBUG
+            var decorationMilliseconds = YearChartDiagnostics.GetElapsedMilliseconds(decorationStart);
+
+            var chartMilliseconds = DrawScaledChart(graphics, pageBounds, pageSize);
+#else
+            DrawScaledChart(graphics, pageBounds, pageSize);
+#endif
+
+#if DEBUG
+            var borderStart = YearChartDiagnostics.StartTimer();
+#endif
+            graphics.DrawRectangle(pageBorderPen, pageBounds);
+#if DEBUG
+            var borderMilliseconds = YearChartDiagnostics.GetElapsedMilliseconds(borderStart);
+
+            var totalMilliseconds = YearChartDiagnostics.GetElapsedMilliseconds(start);
+
+            YearChartDiagnostics.WriteLine(
+                $"page layout draw ({displaySize.Width}x{displaySize.Height}) took {totalMilliseconds:0.###} ms " +
+                $"[clear {backgroundMilliseconds:0.###}, setup {setupMilliseconds:0.###}, " +
+                $"resources {resourceMilliseconds:0.###}, fill {decorationMilliseconds:0.###}, " +
+                $"chart {chartMilliseconds:0.###}, border {borderMilliseconds:0.###}]");
+#endif
         }
 
-        private Bitmap GetPageLayoutImage()
+#if DEBUG
+        private double DrawScaledChart(Graphics graphics, Rectangle pageBounds, SizeF pageSize)
+#else
+        private void DrawScaledChart(Graphics graphics, Rectangle pageBounds, SizeF pageSize)
+#endif
         {
-            Size pagePixelSize = GetPagePixelSize();
+#if DEBUG
+            var start = YearChartDiagnostics.StartTimer();
+#endif
+            var state = graphics.Save();
+            var chartBounds = Rectangle.Round(GetMarginBounds(pageSize));
 
-            if (pageLayoutImage != null &&
-                pageLayoutImagePageSize == pagePixelSize &&
-                MarginsEqual(pageLayoutImageMargins, pageSettings.Margins))
+            try
             {
-                return pageLayoutImage;
+                graphics.TranslateTransform(pageBounds.Left, pageBounds.Top);
+                graphics.ScaleTransform(pageLayoutZoom, pageLayoutZoom);
+
+                ChartPanel.Draw(graphics, chartBounds);
+
+                using var marginPen = new Pen(Color.FromArgb(140, 170, 170, 170));
+                marginPen.DashStyle = DashStyle.Dash;
+                graphics.DrawRectangle(marginPen, chartBounds.X, chartBounds.Y, chartBounds.Width, chartBounds.Height);
+            }
+            finally
+            {
+                graphics.Restore(state);
             }
 
-            ClearPageLayoutImage();
-
-            pageLayoutImage = new Bitmap(pagePixelSize.Width, pagePixelSize.Height);
-            pageLayoutImagePageSize = pagePixelSize;
-            pageLayoutImageMargins = (Margins)pageSettings.Margins.Clone();
-
-            using (Graphics pageGraphics = Graphics.FromImage(pageLayoutImage))
-            {
-                pageGraphics.Clear(Color.White);
-                pageGraphics.SmoothingMode = SmoothingMode.None;
-                pageGraphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-
-                RectangleF marginBounds = GetMarginBounds(pagePixelSize);
-                Rectangle chartBounds = Rectangle.Round(marginBounds);
-
-                yearChartPanel.Draw(pageGraphics, chartBounds);
-
-                using (Pen marginPen = new Pen(Color.FromArgb(140, 170, 170, 170)))
-                {
-                    marginPen.DashStyle = DashStyle.Dash;
-                    pageGraphics.DrawRectangle(marginPen, chartBounds.X, chartBounds.Y, chartBounds.Width, chartBounds.Height);
-                }
-            }
-
-            return pageLayoutImage;
-        }
-
-        private void ClearPageLayoutImage()
-        {
-            if (pageLayoutImage != null)
-            {
-                pageLayoutImage.Dispose();
-                pageLayoutImage = null;
-            }
-        }
-
-        private static bool MarginsEqual(Margins left, Margins right)
-        {
-            return left != null &&
-                right != null &&
-                left.Left == right.Left &&
-                left.Top == right.Top &&
-                left.Right == right.Right &&
-                left.Bottom == right.Bottom;
+#if DEBUG
+            return YearChartDiagnostics.GetElapsedMilliseconds(start);
+#endif
         }
 
         private void YearChartPanelDoubleClick(object sender, EventArgs e)
@@ -338,7 +333,7 @@ namespace YearChart
         {
             if (viewMode == ChartViewMode.PageLayout && ModifierKeys == Keys.Control)
             {
-                float zoomChange = e.Delta > 0 ? 1.10f : 1 / 1.10f;
+                var zoomChange = e.Delta > 0 ? 1.10f : 1 / 1.10f;
                 pageLayoutZoom = Math.Max(MinimumZoom, Math.Min(MaximumZoom, pageLayoutZoom * zoomChange));
                 pageLayoutZoomExplicit = true;
                 ApplyPageLayoutSize();
@@ -368,14 +363,5 @@ namespace YearChart
             Invalidate(true);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                ClearPageLayoutImage();
-            }
-
-            base.Dispose(disposing);
-        }
     }
 }

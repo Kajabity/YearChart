@@ -25,7 +25,6 @@
  * Time: 23:29
  * 
  */
-using System;
 
 namespace YearChart.Model
 {

@@ -26,7 +26,7 @@ namespace YearChart
     {
         public static string GetYearText(YearChartModel model)
         {
-            string year = model.Year.ToString();
+            var year = model.Year.ToString();
             if (model.EndDate.Year > model.StartDate.Year)
             {
                 year = year + "-" + model.EndDate.Year;

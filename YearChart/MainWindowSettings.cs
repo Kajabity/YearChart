@@ -34,17 +34,11 @@ namespace YearChart
 
         public FormWindowState WindowState { get; set; }
 
-        public bool HasBounds
-        {
-            get
-            {
-                return Bounds.Width > 0 && Bounds.Height > 0;
-            }
-        }
+        public bool HasBounds => Bounds.Width > 0 && Bounds.Height > 0;
 
         public static MainWindowSettings Load()
         {
-            string filename = GetSettingsFilename();
+            var filename = GetSettingsFilename();
 
             if (!File.Exists(filename))
             {
@@ -53,7 +47,7 @@ namespace YearChart
 
             try
             {
-                string json = File.ReadAllText(filename);
+                var json = File.ReadAllText(filename);
                 return JsonSerializer.Deserialize<MainWindowSettings>(json) ?? new MainWindowSettings();
             }
             catch (Exception)
@@ -64,15 +58,15 @@ namespace YearChart
 
         public void Save()
         {
-            string filename = GetSettingsFilename();
-            string directory = Path.GetDirectoryName(filename);
+            var filename = GetSettingsFilename();
+            var directory = Path.GetDirectoryName(filename);
 
             if (!string.IsNullOrEmpty(directory))
             {
                 Directory.CreateDirectory(directory);
             }
 
-            JsonSerializerOptions options = new JsonSerializerOptions
+            var options = new JsonSerializerOptions
             {
                 WriteIndented = true
             };

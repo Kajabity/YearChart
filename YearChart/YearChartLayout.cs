@@ -56,13 +56,14 @@ namespace YearChart
             Font titleFont,
             Font headingFont)
         {
-            YearChartLayout layout = new YearChartLayout();
-            layout.Bounds = bounds;
-            layout.ColumnCount = model.NumberOfColumns;
-            layout.RowCount = model.NumberOfRows;
-
-            layout.TitleSize = graphics.MeasureString(model.Title, titleFont);
-            layout.DayHeadingSize = MeasureDayHeadings(graphics, model, headingFont);
+            var layout = new YearChartLayout
+            {
+                Bounds = bounds,
+                ColumnCount = model.NumberOfColumns,
+                RowCount = model.NumberOfRows,
+                TitleSize = graphics.MeasureString(model.Title, titleFont),
+                DayHeadingSize = MeasureDayHeadings(graphics, model, headingFont)
+            };
 
             layout.CanRender =
                 layout.TitleSize.Height < bounds.Height &&
@@ -71,8 +72,8 @@ namespace YearChart
 
             if (!layout.CanRender)
             {
-                layout.XCoordinates = new int[0];
-                layout.YCoordinates = new int[0];
+                layout.XCoordinates = [];
+                layout.YCoordinates = [];
                 layout.TitleBounds = Rectangle.Empty;
                 return layout;
             }
@@ -107,17 +108,17 @@ namespace YearChart
 
         private static SizeF MeasureDayHeadings(Graphics graphics, YearChartModel model, Font headingFont)
         {
-            SizeF dayHeadingSize = new SizeF(1, 1);
+            var dayHeadingSize = new SizeF(1, 1);
 
-            for (int row = 0; row < model.NumberOfRows; row++)
+            for (var row = 0; row < model.NumberOfRows; row++)
             {
-                YearChartCell cell = model.Cells[0, row];
+                var cell = model.Cells[0, row];
                 if (cell == null)
                 {
                     continue;
                 }
 
-                SizeF measured = graphics.MeasureString(cell.text, headingFont);
+                var measured = graphics.MeasureString(cell.text, headingFont);
 
                 if (measured.Width > dayHeadingSize.Width)
                 {
@@ -136,7 +137,7 @@ namespace YearChart
             XCoordinates[ColumnCount] = Bounds.Right - 1;
 
             float width = XCoordinates[ColumnCount] - XCoordinates[1];
-            for (int column = 2; column <= ColumnCount; column++)
+            for (var column = 2; column <= ColumnCount; column++)
             {
                 XCoordinates[column] = (int)(XCoordinates[1] + (column - 1) * (width / (ColumnCount - 1)));
             }
@@ -146,7 +147,7 @@ namespace YearChart
             YCoordinates[RowCount] = Bounds.Bottom - 1;
 
             float height = YCoordinates[RowCount] - YCoordinates[0];
-            for (int row = 1; row <= RowCount; row++)
+            for (var row = 1; row <= RowCount; row++)
             {
                 YCoordinates[row] = (int)(YCoordinates[0] + row * (height / RowCount));
             }

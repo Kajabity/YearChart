@@ -41,7 +41,7 @@ namespace YearChart
 			//
 			InitializeComponent();
 			
-			string version = Application.ProductName + " v" + Application.ProductVersion.ToString();
+			var version = Application.ProductName + " v" + Application.ProductVersion.ToString();
 			Debug.WriteLine( "App. Version: " + version );
 			labelVersion.Text = version;
 			
@@ -53,8 +53,8 @@ namespace YearChart
         private void LinkWebsiteLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			//TODO: Use the Link from 'e'.
-			string target = linkWebsite.Text;
-			System.Diagnostics.Process.Start( target );
+			var target = linkWebsite.Text;
+			Process.Start( target );
 		}
 	}
 }
