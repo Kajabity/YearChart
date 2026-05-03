@@ -80,22 +80,12 @@ namespace YearChart
             StartPosition = FormStartPosition.Manual;
             Bounds = bounds;
 
-            if (mainWindowSettings.WindowState == FormWindowState.Maximized)
-            {
-                WindowState = FormWindowState.Maximized;
-            }
-            else
-            {
-                WindowState = FormWindowState.Normal;
-            }
+            WindowState = mainWindowSettings.WindowState == FormWindowState.Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
         }
 
         private void SaveMainWindowSettings()
         {
-            if (mainWindowSettings == null)
-            {
-                mainWindowSettings = new MainWindowSettings();
-            }
+            mainWindowSettings ??= new MainWindowSettings();
 
             mainWindowSettings.Bounds = WindowState == FormWindowState.Normal ? Bounds : RestoreBounds;
             mainWindowSettings.WindowState = WindowState == FormWindowState.Minimized ? FormWindowState.Normal : WindowState;
@@ -112,15 +102,20 @@ namespace YearChart
                 }
             }
 
-            var workingArea = Screen.PrimaryScreen.WorkingArea;
-            var size = new Size(
-                Math.Min(bounds.Width, workingArea.Width),
-                Math.Min(bounds.Height, workingArea.Height));
+            if (Screen.PrimaryScreen != null)
+            {
+                var workingArea = Screen.PrimaryScreen.WorkingArea;
+                var size = new Size(
+                    Math.Min(bounds.Width, workingArea.Width),
+                    Math.Min(bounds.Height, workingArea.Height));
 
-            return new Rectangle(workingArea.Location, size);
+                return new Rectangle(workingArea.Location, size);
+            }
+
+            return bounds;
         }
 
-        private void doOptionsDialog()
+        private void DoOptionsDialog()
         {
             using var dialog = new YearChartOptionsForm();
             var yearChartPanel = yearChartHost.ChartPanel;
@@ -166,7 +161,7 @@ namespace YearChart
 
                 yearChartPanel.Calculate();
                 yearChartHost.InvalidateChart();
-                statusLabel.Text = "Ready";
+                statusLabel.Text = @"Ready";
             }
         }
 
@@ -186,7 +181,8 @@ namespace YearChart
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to print YearChart:\n" + ex.Message, "YearChart", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Failed to print YearChart:
+" + ex.Message, @"YearChart", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -224,7 +220,8 @@ namespace YearChart
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Failed to print YearChart:\n" + ex.Message, "YearChart", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"Failed to print YearChart:
+" + ex.Message, @"YearChart", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -236,17 +233,12 @@ namespace YearChart
 
         private void OptionsToolStripMenuItemClick(object sender, EventArgs e)
         {
-            doOptionsDialog();
+            DoOptionsDialog();
         }
 
         private void ContentsToolStripMenuItemClick(object sender, EventArgs e)
         {
             Help.ShowHelp(this, "YearChart.chm", HelpNavigator.TableOfContents);
-        }
-
-        private void IndexToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            Help.ShowHelpIndex(this, "YearChart.chm");
         }
 
         private void SearchToolStripMenuItemClick(object sender, EventArgs e)
@@ -258,12 +250,12 @@ namespace YearChart
         {
             var dialog = new AboutForm();
 
-            var result = dialog.ShowDialog(this);
+            dialog.ShowDialog(this);
         }
 
         private void YearChartHostChartDoubleClick(object sender, EventArgs e)
         {
-            doOptionsDialog();
+            DoOptionsDialog();
         }
 
         private void StretchViewButtonClick(object sender, EventArgs e)
@@ -311,7 +303,7 @@ namespace YearChart
         {
             using var dialog = new SaveFileDialog();
             dialog.DefaultExt = "html";
-            dialog.Filter = "HTML files (*.html, *.htm)|*.html;*.htm|All files (*.*)|*.*";
+            dialog.Filter = @"HTML files (*.html, *.htm)|*.html;*.htm|All files (*.*)|*.*";
             dialog.FileName = "YearChart.html";
 
             var result = dialog.ShowDialog(this);

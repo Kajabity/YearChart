@@ -314,7 +314,7 @@ namespace YearChart
             stretchViewButton.AutoSize = false;
             stretchViewButton.Checked = true;
             stretchViewButton.CheckState = System.Windows.Forms.CheckState.Checked;
-            stretchViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
+            stretchViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             stretchViewButton.Name = "stretchViewButton";
             stretchViewButton.Size = new System.Drawing.Size(32, 36);
             stretchViewButton.Text = "Stretch to Fit";
@@ -324,7 +324,7 @@ namespace YearChart
             // pageLayoutViewButton
             // 
             pageLayoutViewButton.AutoSize = false;
-            pageLayoutViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
+            pageLayoutViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             pageLayoutViewButton.Icon = ChartViewButtonIcon.PageLayout;
             pageLayoutViewButton.Name = "pageLayoutViewButton";
             pageLayoutViewButton.Size = new System.Drawing.Size(32, 36);
