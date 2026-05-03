@@ -26,7 +26,7 @@ namespace YearChart
 {
     internal class YearChartHtmlWriter
     {
-        private YearChartModel model;
+        private readonly YearChartModel model;
 
         /// <summary>
         /// Construct a writer for a specified YearChart model instance.
@@ -49,85 +49,83 @@ namespace YearChart
             //  from http://msdn.microsoft.com/en-us/library/system.text.encodinginfo.getencoding.aspx
 
             //  Create a writer to output to a UTF-8 encoding (code page 65001).
-            using( StreamWriter writer = new StreamWriter( stream, System.Text.Encoding.GetEncoding( 65001 ) ) )
+            using var writer = new StreamWriter( stream, System.Text.Encoding.GetEncoding( 65001 ) );
+            //TODO: Internationalise this part.
+            writer.WriteLine( "<html lang=\"en-GB\">" );
+            writer.WriteLine( "<head>" );
+            writer.WriteLine( "	<meta charset=\"UTF-8\">" );
+            writer.WriteLine( "	<title>" + model.Title + " | www.kajabity.com</title>" );
+            writer.WriteLine( "	<meta name=\"generator\" content=\"Kajabity " + Application.ProductName + " version " + Application.ProductVersion + "\">" );
+            writer.WriteLine( "	<style type=\"text/css\">" );
+            writer.WriteLine( "	body { font-family: Arial, Helvetica, sans-serif; }" );
+            writer.WriteLine( "	#header { height: 40px; }" );
+            writer.WriteLine( "	#link { float: left; vertical-align:bottom; }" );
+            writer.WriteLine( "	#year { float: right;  clear:none;}" );
+            writer.WriteLine( "	#title { text-align:center; clear:none; width: 50%; }" );
+            writer.WriteLine( "	table { background-color:black; border: 2px solid; width: 100%; }" );
+            var cellWidthPercent = 100 / model.NumberOfColumns;
+            //TODO: correct for rounding errors - for left headings, calculate by subtracting width of n-1 columns.
+            writer.WriteLine( "	th { text-align:left; background-color:yellow; padding: 0; width: " + cellWidthPercent + "%; }" );
+            writer.WriteLine( "	.thick-left { border-left:2px solid; }" );
+            writer.WriteLine( "	.thick-right { border-right: 2px solid; }" );
+            writer.WriteLine( "	.thick-top { border-top:2px solid; }" );
+            writer.WriteLine( "	.thick-bottom { border-bottom: 2px solid; }" );
+            writer.WriteLine( "	td { background-color:white; padding: 1; width: " + cellWidthPercent + "%; }" );
+            writer.WriteLine( "	.empty { background-color:silver; }" );
+            writer.WriteLine( "	.weekend { background-color:orange; }" );
+            writer.WriteLine( "	</style>" );
+            writer.WriteLine( "</head>" );
+
+            writer.WriteLine( "<body>" );
+
+            writer.WriteLine( "<div id=\"header\">" );
+            writer.WriteLine( "	<div id=\"link\"><a href=\"http://www.kajabity.com\">www.kajabity.com</a></div>" );
+            writer.WriteLine( "	<div id=\"title\"><h1>" + model.Title + "</h1></div>" );
+
+            writer.WriteLine( "	<div id=\"year\">" + YearChartDisplayText.GetYearText( model ) + "</div>" );
+            writer.WriteLine( "</div>" );
+            writer.WriteLine( "<table>" );
+
+            //	Fill in the Cells
+            for( var row = 0; row < model.NumberOfRows; row++ )
             {
-                //TODO: Internationalise this part.
-                writer.WriteLine( "<html lang=\"en-GB\">" );
-                writer.WriteLine( "<head>" );
-                writer.WriteLine( "	<meta charset=\"UTF-8\">" );
-                writer.WriteLine( "	<title>" + model.Title + " | www.kajabity.com</title>" );
-                writer.WriteLine( "	<meta name=\"generator\" content=\"Kajabity " + Application.ProductName + " version " + Application.ProductVersion + "\">" );
-                writer.WriteLine( "	<style type=\"text/css\">" );
-                writer.WriteLine( "	body { font-family: Arial, Helvetica, sans-serif; }" );
-                writer.WriteLine( "	#header { height: 40px; }" );
-                writer.WriteLine( "	#link { float: left; vertical-align:bottom; }" );
-                writer.WriteLine( "	#year { float: right;  clear:none;}" );
-                writer.WriteLine( "	#title { text-align:center; clear:none; width: 50%; }" );
-                writer.WriteLine( "	table { background-color:black; border: 2px solid; width: 100%; }" );
-                int cellWidthPercent = 100 / model.NumberOfColumns;
-                //TODO: correct for rounding errors - for left headings, calculate by subtracting width of n-1 columns.
-                writer.WriteLine( "	th { text-align:left; background-color:yellow; padding: 0; width: " + cellWidthPercent + "%; }" );
-                writer.WriteLine( "	.thick-left { border-left:2px solid; }" );
-                writer.WriteLine( "	.thick-right { border-right: 2px solid; }" );
-                writer.WriteLine( "	.thick-top { border-top:2px solid; }" );
-                writer.WriteLine( "	.thick-bottom { border-bottom: 2px solid; }" );
-                writer.WriteLine( "	td { background-color:white; padding: 1; width: " + cellWidthPercent + "%; }" );
-                writer.WriteLine( "	.empty { background-color:silver; }" );
-                writer.WriteLine( "	.weekend { background-color:orange; }" );
-                writer.WriteLine( "	</style>" );
-                writer.WriteLine( "</head>" );
-
-                writer.WriteLine( "<body>" );
-
-                writer.WriteLine( "<div id=\"header\">" );
-                writer.WriteLine( "	<div id=\"link\"><a href=\"http://www.kajabity.com\">www.kajabity.com</a></div>" );
-                writer.WriteLine( "	<div id=\"title\"><h1>" + model.Title + "</h1></div>" );
-
-                writer.WriteLine( "	<div id=\"year\">" + YearChartDisplayText.GetYearText( model ) + "</div>" );
-                writer.WriteLine( "</div>" );
-                writer.WriteLine( "<table>" );
-
-                //	Fill in the Cells
-                for( int row = 0; row < model.NumberOfRows; row++ )
+                writer.WriteLine( "	<tr>" );
+                for( var col = 0; col < model.NumberOfColumns; col++ )
                 {
-                    writer.WriteLine( "	<tr>" );
-                    for( int col = 0; col < model.NumberOfColumns; col++ )
+                    var day = model.Cells[ col, row ];
+                    //TODO: Internationalise this part.
+                    //TODO: Calculate day text with excaped HTML syntax.
+                    //TODO: Calculate cell style - perhaps use Table level style instead.  Or row/column level style...  Specifically the border thicknesses.
+                    if( day == null || day.type == CellType.Blank )
                     {
-                        YearChartCell day = model.Cells[ col, row ];
-                        //TODO: Internationalise this part.
-                        //TODO: Calculate day text with excaped HTML syntax.
-                        //TODO: Calculate cell style - perhaps use Table level style instead.  Or row/column level style...  Specifically the border thicknesses.
-                        if( day == null || day.type == CellType.Blank )
-                        {
-                            writer.WriteLine( "		<td class=\"empty\"></td>" );
-                        }
-                        else if( day.type == CellType.Heading )
-                        {
-                            writer.WriteLine( "		<th class=\"\">" + day.text + "</th>" );
-                        }
-                        else if( day.type == CellType.Weekday )
-                        {
-                            writer.WriteLine( "		<td class=\"\">" + day.text + "</td>" );
-                        }
-                        else if( day.type == CellType.Weekend )
-                        {
-                            writer.WriteLine( "		<td class=\"weekend\">" + day.text + "</td>" );
-                        }
-                        else if( day.type == CellType.Extra )
-                        {
-                            writer.WriteLine( "		<td class=\"\">" + day.text + "</td>" );
-                        }
+                        writer.WriteLine( "		<td class=\"empty\"></td>" );
                     }
-
-                    writer.WriteLine( "	</tr>" );
+                    else if( day.type == CellType.Heading )
+                    {
+                        writer.WriteLine( "		<th class=\"\">" + day.text + "</th>" );
+                    }
+                    else if( day.type == CellType.Weekday )
+                    {
+                        writer.WriteLine( "		<td class=\"\">" + day.text + "</td>" );
+                    }
+                    else if( day.type == CellType.Weekend )
+                    {
+                        writer.WriteLine( "		<td class=\"weekend\">" + day.text + "</td>" );
+                    }
+                    else if( day.type == CellType.Extra )
+                    {
+                        writer.WriteLine( "		<td class=\"\">" + day.text + "</td>" );
+                    }
                 }
 
-                writer.WriteLine( "</table>" );
-                writer.WriteLine( "</body>" );
-
-                writer.WriteLine( "</html>" );
-                writer.Close();
+                writer.WriteLine( "	</tr>" );
             }
+
+            writer.WriteLine( "</table>" );
+            writer.WriteLine( "</body>" );
+
+            writer.WriteLine( "</html>" );
+            writer.Close();
         }
     }
 

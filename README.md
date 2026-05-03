@@ -1,6 +1,14 @@
 Kajabity YearChart
 ===================
 
+[![Build](https://github.com/Kajabity/YearChart/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/Kajabity/YearChart/actions/workflows/build.yml)
+[![Vulnerability Scan](https://github.com/Kajabity/YearChart/actions/workflows/vulnerability-scan.yml/badge.svg?branch=master)](https://github.com/Kajabity/YearChart/actions/workflows/vulnerability-scan.yml)
+[![Secret Scan](https://github.com/Kajabity/YearChart/actions/workflows/secret-scan.yml/badge.svg?branch=master)](https://github.com/Kajabity/YearChart/actions/workflows/secret-scan.yml)
+[![Dependabot](https://img.shields.io/badge/Dependabot-enabled-025e8c?logo=dependabot)](https://github.com/Kajabity/YearChart/blob/master/.github/dependabot.yml)
+[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE.md)
+[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![Platform](https://img.shields.io/badge/platform-Windows-0078D4?logo=windows)](YearChart/YearChart.csproj)
+
 YearChart is a Windows desktop application for creating printable day-to-day charts for date ranges from 1 day to 5 years.
 
 It is useful for financial year planners, academic year planners, and other calendar-style planning layouts that are awkward to produce and maintain in a spreadsheet.
@@ -42,6 +50,7 @@ Quality And Security
 * Dependabot is enabled for dependency updates.
 * Secret scanning is configured locally via `pre-commit` and in GitHub Actions.
 * Vulnerability scanning is configured in GitHub Actions.
+* CodeQL is not currently configured; static security coverage is currently provided by secret scanning and NuGet vulnerability scanning.
 
 Project Notes
 -------------

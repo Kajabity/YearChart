@@ -18,21 +18,28 @@
  * http://www.kajabity.com
  */
 
-using YearChart.Model;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Reflection;
 
 namespace YearChart
 {
-    internal static class YearChartDisplayText
+    internal static class ChartViewIconImages
     {
-        public static string GetYearText(YearChartModel model)
-        {
-            var year = model.Year.ToString();
-            if (model.EndDate.Year > model.StartDate.Year)
-            {
-                year = year + "-" + model.EndDate.Year;
-            }
+        private const string ResourcePrefix = "YearChart.Assets.ViewIcons.";
 
-            return year;
+        public static Image Load(ChartViewButtonIcon icon)
+        {
+            var resourceName = icon == ChartViewButtonIcon.PageLayout
+                ? "page-layout-24.png"
+                : "stretch-view-24.png";
+
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourcePrefix + resourceName)
+                ?? throw new InvalidOperationException("Could not find chart view icon resource: " + resourceName);
+
+            using var image = Image.FromStream(stream);
+            return new Bitmap(image);
         }
     }
 }

@@ -42,28 +42,16 @@ namespace YearChart
 		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public string ChartTitle
 		{
-			get
-			{
-				return textTitle.Text;
-			}
-			set
-			{
-				textTitle.Text = value;
-			}
-		}
+			get => textTitle.Text;
+            set => textTitle.Text = value;
+        }
 
 		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public int Year
 		{
-			get
-			{
-				return (int) numericYear.Value;
-			}
-			set
-			{
-				numericYear.Value = value;
-			}
-		}
+			get => (int) numericYear.Value;
+            set => numericYear.Value = value;
+        }
 
 		/// <summary>
 		/// This method tests if the date range represents a whole year - 1st January to 31st December.
@@ -72,11 +60,8 @@ namespace YearChart
 		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public bool IsWholeYear
 		{
-			get
-			{
-				return radioWholeYear.Checked;
-			}
-			set
+			get => radioWholeYear.Checked;
+            set
 			{
 				radioWholeYear.Checked = value;
 				radioDateRange.Checked = !value;
@@ -86,51 +71,33 @@ namespace YearChart
 		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public DateTime StartDate
 		{
-			get
-			{
-				return dateFrom.Value;
-			}
-			set
-			{
-				dateFrom.Value = value;
-			}
-		}
+			get => dateFrom.Value;
+            set => dateFrom.Value = value;
+        }
 
 		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public DateTime EndDate
 		{
-			get
-			{
-				return dateTo.Value;
-			}
-			set
-			{
-				dateTo.Value = value;
-			}
-		}
+			get => dateTo.Value;
+            set => dateTo.Value = value;
+        }
 
 		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public bool Abbreviate
 		{
-			get
-			{
-				return checkAbbreviate.Checked;
-			}
-			set
-			{
-				checkAbbreviate.Checked = value;
-			}
-		}
+			get => checkAbbreviate.Checked;
+            set => checkAbbreviate.Checked = value;
+        }
 
-		public ArrayList extraRows = new ArrayList();
+		public ArrayList extraRows = new();
 
 		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public YearChartCell[] ExtraRows
 		{
 			get
 			{
-				YearChartCell []extra = new YearChartCell[ listExtraRows.Items.Count ];
-				for( int i = 0; i < extra.Length; i++ )
+				var extra = new YearChartCell[ listExtraRows.Items.Count ];
+				for( var i = 0; i < extra.Length; i++ )
 				{
 					extra[ i ] = new HeadingCell( (string) listExtraRows.Items[ i ] ) ;
 				}
@@ -143,7 +110,7 @@ namespace YearChart
 				
 				if( value != null )
 				{
-					for( int i = 0; i < value.Length; i++ )
+					for( var i = 0; i < value.Length; i++ )
 					{
 						extraRows.Add( value[ i ].text );
 						listExtraRows.Items.Add( value[ i ].text );
@@ -154,15 +121,15 @@ namespace YearChart
 			}
 		}
 
-		public ArrayList extraColumns = new ArrayList();
+		public ArrayList extraColumns = new();
 
 		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public YearChartCell[] ExtraColumns
 		{
 			get
 			{
-				YearChartCell []extra = new YearChartCell[ listExtraColumns.Items.Count ];
-				for( int i = 0; i < extra.Length; i++ )
+				var extra = new YearChartCell[ listExtraColumns.Items.Count ];
+				for( var i = 0; i < extra.Length; i++ )
 				{
 					extra[ i ] = new HeadingCell( (string) listExtraColumns.Items[ i ] ) ;
 				}
@@ -175,7 +142,7 @@ namespace YearChart
 				
 				if( value != null )
 				{
-					for( int i = 0; i < value.Length; i++ )
+					for( var i = 0; i < value.Length; i++ )
 					{
 						extraColumns.Add( value[ i ].text );
 						listExtraColumns.Items.Add( value[ i ].text );
@@ -191,22 +158,16 @@ namespace YearChart
 		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public Color HeadingColor
 		{
-			get { return m_colorHeading; }
-			set { m_colorHeading = value; Invalidate(); }
+			get => m_colorHeading;
+            set { m_colorHeading = value; Invalidate(); }
 		}
 
 		[DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
 		public DayOfWeek WeekStartDay
 		{
-			get
-			{
-				return (DayOfWeek) comboWeekStartDay.SelectedIndex;
-			}
-			set
-			{
-				comboWeekStartDay.SelectedIndex = (int) value;
-			}
-		}
+			get => (DayOfWeek) comboWeekStartDay.SelectedIndex;
+            set => comboWeekStartDay.SelectedIndex = (int) value;
+        }
 
 		
 		public YearChartOptionsForm()

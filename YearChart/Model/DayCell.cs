@@ -39,14 +39,14 @@ namespace YearChart.Model
 			this.day = day;
 			if( day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Sunday )
 			{
-				this.type = CellType.Weekend;
+				type = CellType.Weekend;
 			}
 			else
 			{
-				this.type = CellType.Weekday;
+				type = CellType.Weekday;
 			}
 			
-			this.text = day.Day.ToString();
+			text = day.Day.ToString();
 		}
 	}//end DayCell
 

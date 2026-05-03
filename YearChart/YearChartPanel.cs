@@ -34,101 +34,63 @@ namespace YearChart
     /// <summary>
     /// Description of Class1.
     /// </summary>
-    public class YearChartPanel : System.Windows.Forms.Panel
+    public sealed class YearChartPanel : Panel
     {
-        private readonly YearChartRenderer renderer = new YearChartRenderer();
+        private readonly YearChartRenderer renderer = new();
 
         /// <summary>
         /// Defines the width of an extra padding margin used only when drawing on screen.
         /// </summary>
-        private int padding = 5;
+        private const int padding = 5;
 
         /// <summary>
         /// A private model - aggregated through this class so that changes can trigger updating the display.
         /// </summary>
-        private YearChartModel model = new YearChartModel();
-
-        public YearChartModel Model
-        {
-            get
-            {
-                return model;
-            }
-        }
+        public YearChartModel Model { get; } = new();
 
 
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public DayOfWeek WeekStartDay
         {
-            get
-            {
-                return model.StartOfWeek;
-            }
-            set
-            {
-                model.StartOfWeek = value;
-            }
+            get => Model.StartOfWeek;
+            set => Model.StartOfWeek = value;
         }
 
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public int Year
         {
-            get { return model.Year; }
-            set { model.Year = value; Invalidate(); }
+            get => Model.Year;
+            set { Model.Year = value; Invalidate(); }
         }
 
-        public bool IsWholeYear
-        {
-            get
-            {
-                return model.IsWholeYear;
-            }
-        }
+        public bool IsWholeYear => Model.IsWholeYear;
 
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public DateTime StartDate
         {
-            get
-            {
-                return model.StartDate;
-            }
-            set
-            {
-                model.StartDate = value;
-            }
+            get => Model.StartDate;
+            set => Model.StartDate = value;
         }
 
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public DateTime EndDate
         {
-            get
-            {
-                return model.EndDate;
-            }
-            set
-            {
-                model.EndDate = value;
-            }
+            get => Model.EndDate;
+            set => Model.EndDate = value;
         }
 
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public bool Abbreviate
         {
-            get
-            {
-                return model.Abbreviate;
-            }
-            set
-            {
-                model.Abbreviate = value;
-            }
+            get => Model.Abbreviate;
+            set => Model.Abbreviate = value;
         }
 
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public string Title
         {
-            get { return model.Title; }
-            set { model.Title = value; Invalidate(); }
+            get => Model.Title;
+            set { Model.Title = value; Invalidate(); }
         }
 
         private Color m_colorHeading = Color.Yellow;
@@ -136,7 +98,7 @@ namespace YearChart
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public Color HeadingColor
         {
-            get { return m_colorHeading; }
+            get => m_colorHeading;
             set { m_colorHeading = value; Invalidate(); }
         }
 
@@ -145,7 +107,7 @@ namespace YearChart
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public Color WeekendColor
         {
-            get { return m_colorWeekend; }
+            get => m_colorWeekend;
             set { m_colorWeekend = value; Invalidate(); }
         }
 
@@ -154,20 +116,17 @@ namespace YearChart
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public Color BlankColor
         {
-            get { return m_colorBlank; }
+            get => m_colorBlank;
             set { m_colorBlank = value; Invalidate(); }
         }
 
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public YearChartCell[] ExtraRows
         {
-            get
-            {
-                return model.ExtraRows;
-            }
+            get => Model.ExtraRows;
             set
             {
-                model.ExtraRows = value;
+                Model.ExtraRows = value;
                 Invalidate();
             }
         }
@@ -175,42 +134,45 @@ namespace YearChart
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public YearChartCell[] ExtraColumns
         {
-            get
-            {
-                return model.ExtraColumns;
-            }
+            get => Model.ExtraColumns;
             set
             {
-                model.ExtraColumns = value;
+                Model.ExtraColumns = value;
                 Invalidate();
             }
         }
 
         public YearChartPanel()
         {
-            model.Update();
-            this.BackColor = Color.White;
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
+            Model.Update();
+            BackColor = Color.White;
         }
 
         public void Calculate()
         {
-            model.Update();
+            Model.Update();
         }
 
         protected override void OnPaint( PaintEventArgs ev )
         {
+#if DEBUG
+            var start = YearChartDiagnostics.StartTimer();
+#endif
             base.OnPaint( ev );
-
-            //			Brush brushBack     = new SolidBrush( Color.Aqua );
-            //			ev.Graphics.FillRectangle( brushBack, ClientRectangle );
 
             // Add a blank padded border around the displayed chart.
             Draw( ev.Graphics, Rectangle.Inflate( ClientRectangle, -padding, -padding ) );
+#if DEBUG
+            YearChartDiagnostics.WriteElapsed(
+                $"panel paint ({ClientSize.Width}x{ClientSize.Height})",
+                start);
+#endif
         }
 
         public YearChartLayout Draw( Graphics g, Rectangle rectClient )
         {
-            return renderer.Draw( g, model, CreateRenderStyle(), rectClient );
+            return renderer.Draw( g, Model, CreateRenderStyle(), rectClient );
         }
 
         private YearChartRenderStyle CreateRenderStyle()
@@ -229,7 +191,7 @@ namespace YearChart
         protected override void OnResize( EventArgs ev )
         {
             base.OnResize( ev );
-            this.Invalidate( ClientRectangle );
+            Invalidate( ClientRectangle );
         }
     }
 }

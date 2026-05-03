@@ -26,7 +26,6 @@
  * 
  */
 using System;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace YearChart.Model
@@ -39,86 +38,43 @@ namespace YearChart.Model
 		/// <summary>
 		/// A class used to provide internationalised date labels.
 		/// </summary>
-		private DateTimeFormatInfo dateTimeInfo = DateTimeFormatInfo.GetInstance( null );
+		private readonly DateTimeFormatInfo dateTimeInfo = DateTimeFormatInfo.GetInstance( null );
 
-		private int numberOfMonths = 0;
-		
-		/// <summary>
+        /// <summary>
 		/// The number of Months of dates - excludes headings and extra columns.
 		/// </summary>
-		public int NumberOfMonths
-		{
-			get
-			{
-				return numberOfMonths;
-			}
-		}
+		public int NumberOfMonths { get; private set; }
 
-		private int numberOfColumns = 0;
-		
-		/// <summary>
+        /// <summary>
 		/// The number of columns of dates - includes headings and extra columns.
 		/// </summary>
-		public int NumberOfColumns
-		{
-			get
-			{
-				return numberOfColumns;
-			}
-		}
+		public int NumberOfColumns { get; private set; }
 
-		private int numberOfDays = 0;
-		
-		/// <summary>
+        /// <summary>
 		/// The number of rows of dates - excludes headings and extra rows.
 		/// </summary>
-		public int NumberOfDays
-		{
-			get
-			{
-				return numberOfDays;
-			}
-		}
+		public int NumberOfDays { get; private set; }
 
-		private int numberOfRows = 0;
-
-		/// <summary>
+        /// <summary>
 		/// The number of rows of days (whether blank or not) - includes headings and extra columns.
 		/// </summary>
-		public int NumberOfRows
-		{
-			get
-			{
-				return numberOfRows;
-			}
-		}
+		public int NumberOfRows { get; private set; }
 
-		private YearChartCell [,] cells = null;
-		
-		/// <summary>
+        /// <summary>
 		/// The matrix of rows and columns of YearChartCells - 
 		/// including Headings, Days, Extra columns and some may be blank.
 		/// </summary>
-		public YearChartCell [,] Cells
-		{
-			get
-			{
-				return cells;
-			}
-		}
-		
-		private DayOfWeek startOfWeek = DayOfWeek.Monday;
+		public YearChartCell [,] Cells { get; private set; }
+
+        private DayOfWeek startOfWeek;
 
 		/// <summary>
 		/// Indicates which day of the week the chart begins with.
 		/// </summary>
 		public DayOfWeek StartOfWeek
 		{
-			get
-			{
-				return startOfWeek;
-			}
-			set
+			get => startOfWeek;
+            set
 			{
 				if( value != startOfWeek )
 				{
@@ -135,11 +91,8 @@ namespace YearChart.Model
 		/// </summary>
 		public int Year
 		{
-			get
-			{
-				return startDate.Year;
-			}
-			set
+			get => startDate.Year;
+            set
 			{
 				startDate = new DateTime( value, 1, 1 );
 				endDate = new DateTime( value, 12, 31 );
@@ -172,15 +125,9 @@ namespace YearChart.Model
 		/// </summary>
 		public DateTime StartDate
 		{
-			get
-			{
-				return startDate;
-			}
-			set
-			{
-				startDate = value;
-			}
-		}
+			get => startDate;
+            set => startDate = value;
+        }
 
 		private DateTime endDate;
 		
@@ -190,99 +137,45 @@ namespace YearChart.Model
 		/// </summary>
 		public DateTime EndDate
 		{
-			get
-			{
-				return endDate;
-			}
-			set
-			{
-				endDate = value;
-			}
-		}
+			get => endDate;
+            set => endDate = value;
+        }
 
-		private bool abbreviate;
-		
-		/// <summary>
+        /// <summary>
 		/// Determines if the full names of Weekdays and Months will be shown (false) or 
 		/// an abbreviated name (true).
 		/// </summary>
-		public bool Abbreviate
-		{
-			get
-			{
-				return abbreviate;
-			}
-			set
-			{
-				abbreviate = value;
-			}
-		}
+		public bool Abbreviate { get; set; }
 
-		private string title;
-		
-		/// <summary>
+        /// <summary>
 		/// The title of the YearChart - displayed at the top.
 		/// </summary>
-		public string Title
-		{
-			get
-			{
-				return title;
-			}
-			set
-			{
-				title = value;
-			}
-		}
+		public string Title { get; set; }
 
-		private YearChartCell[] extraRows;
-		
-		/// <summary>
+        /// <summary>
 		/// A set of zero or more additional rows to be shown at the bottom of the chart.  Each entry should
 		/// be a HeadingCell containing the heading for the row.
 		/// </summary>
-		public YearChartCell[] ExtraRows
-		{
-			get
-			{
-				return extraRows;
-			}
-			set
-			{
-				extraRows = value;
-			}
-		}
+		public YearChartCell[] ExtraRows { get; set; }
 
-		private YearChartCell[] extraColumns;
-		
-		/// <summary>
+        /// <summary>
 		/// A set of zero or more additional columns to be shown to the right of the chart.  Each entry should
 		/// be a HeadingCell containing the heading for the column.
 		/// </summary>
-		public YearChartCell[] ExtraColumns
-		{
-			get
-			{
-				return extraColumns;
-			}
-			set
-			{
-				extraColumns = value;
-			}
-		}
+		public YearChartCell[] ExtraColumns { get; set; }
 
-		/// <summary>
+        /// <summary>
 		/// Construct the model setting the year to the current year.
 		/// </summary>
 		public YearChartModel()
 		{
-			DateTime now = DateTime.Now;
+			var now = DateTime.Now;
 			Year = now.Year;
 			startOfWeek = DayOfWeek.Monday;
-			title = "YearChart";
-			extraRows = new YearChartCell[0];
-			extraColumns = new YearChartCell[0];
-			abbreviate = false;
+			Title = "YearChart";
+			ExtraRows = [];
+			ExtraColumns = [];
+			Abbreviate = false;
 		}
 
 		/// <summary>
@@ -290,8 +183,16 @@ namespace YearChart.Model
 		/// </summary>
 		public void Update()
 		{
+#if DEBUG
+			var start = YearChartDiagnostics.StartTimer();
+#endif
 			CalculateSize();
 			BuildMatrix();
+#if DEBUG
+			YearChartDiagnostics.WriteElapsed(
+				$"model update ({NumberOfColumns} columns, {NumberOfRows} rows)",
+				start);
+#endif
 		}
 
 		
@@ -300,18 +201,18 @@ namespace YearChart.Model
 		/// </summary>
 		private void CalculateSize()
 		{
-			numberOfMonths = 0;
-			numberOfDays = 0;
+			NumberOfMonths = 0;
+			NumberOfDays = 0;
 
 			// Get the first day of the month.
-			DateTime today = new DateTime( startDate.Year, startDate.Month, 1 );
+			var today = new DateTime( startDate.Year, startDate.Month, 1 );
 
 			while( today <= endDate )
 			{
-				DayOfWeek dow = startOfWeek;
-				numberOfMonths++;
+				var dow = startOfWeek;
+				NumberOfMonths++;
 
-				int nDays = 0;
+				var nDays = 0;
 				
 				//	Skip to right day of the week.
 				while( dow != today.DayOfWeek )
@@ -352,15 +253,15 @@ namespace YearChart.Model
 				while( (today.Day > 1) && (today <= endDate) );
 
 				// Store the max number of days.
-				if( nDays > numberOfDays )
+				if( nDays > NumberOfDays )
 				{
-					numberOfDays = nDays;
+					NumberOfDays = nDays;
 				}
 			}
 
 			//	Now include the heading and extxra rows and columns.
-			numberOfColumns = numberOfMonths + 1 + extraColumns.Length;
-			numberOfRows = numberOfDays + 1 + extraRows.Length;
+			NumberOfColumns = NumberOfMonths + 1 + ExtraColumns.Length;
+			NumberOfRows = NumberOfDays + 1 + ExtraRows.Length;
 		}
 
 		/// <summary>
@@ -370,17 +271,17 @@ namespace YearChart.Model
 		private void BuildMatrix()
 		{
 			//	Allocate the matrix.  Null entries are blank.
-			cells = new YearChartCell[ numberOfColumns, numberOfRows ];
+			Cells = new YearChartCell[ NumberOfColumns, NumberOfRows ];
 
-			DayOfWeek dow = startOfWeek;
+			var dow = startOfWeek;
 			int row;
 			
 			//	Top Left corner.
-			cells[ 0, 0 ] = new HeadingCell( " " );
+			Cells[ 0, 0 ] = new HeadingCell( " " );
 
-			for( row = 1; row <= numberOfDays; row++ )
+			for( row = 1; row <= NumberOfDays; row++ )
 			{
-				cells[ 0, row ] = new HeadingCell( GetDayName( dow ++ ) );
+				Cells[ 0, row ] = new HeadingCell( GetDayName( dow ++ ) );
 				
 				if( dow > DayOfWeek.Saturday ) {
 					dow = DayOfWeek.Sunday;
@@ -388,12 +289,12 @@ namespace YearChart.Model
 			}
 			
 			// Get the first day of the month.
-			DateTime today = new DateTime( startDate.Year, startDate.Month, 1 );
-			int col = 1;
+			var today = new DateTime( startDate.Year, startDate.Month, 1 );
+			var col = 1;
 
 			while( today <= endDate )
 			{
-				cells[ col, 0 ] = new HeadingCell( GetMonthName( today.Month ) );
+				Cells[ col, 0 ] = new HeadingCell( GetMonthName( today.Month ) );
 
 				dow = startOfWeek;
 
@@ -402,7 +303,7 @@ namespace YearChart.Model
 				//	Skip to right day of the week.
 				while( dow != today.DayOfWeek )
 				{
-					cells[ col, row++ ] = null;
+					Cells[ col, row++ ] = null;
 
 					dow ++;
 					if( dow > DayOfWeek.Saturday ) {
@@ -413,7 +314,7 @@ namespace YearChart.Model
 				// Skip days before the first day.
 				while( today < startDate )
 				{
-					cells[ col, row++ ] = null;
+					Cells[ col, row++ ] = null;
 
 					dow ++;
 					if( dow > DayOfWeek.Saturday ) {
@@ -426,7 +327,7 @@ namespace YearChart.Model
 				// Add days till the end of the month or end date.
 				do
 				{
-					cells[ col, row++ ] = new DayCell( new DateTime( today.Ticks ) );
+					Cells[ col, row++ ] = new DayCell( new DateTime( today.Ticks ) );
 
 					dow ++;
 					if( dow > DayOfWeek.Saturday ) {
@@ -438,40 +339,40 @@ namespace YearChart.Model
 				while( (today.Day > 1) && (today <= endDate) );
 
 				// Store the max number of days.
-				while( row <= numberOfDays )
+				while( row <= NumberOfDays )
 				{
-					cells[ col, row++ ] = null;
+					Cells[ col, row++ ] = null;
 				}
 
 				col++;
 			}
 			
 			//	Add the Extra Columns.
-			for( int extra = 0; extra < extraColumns.Length; extra++ )
-			{
-				cells[ col, 0 ] = extraColumns[ extra ];
+			foreach (var t in ExtraColumns)
+            {
+                Cells[ col, 0 ] = t;
 				
-				for( row = 1; row < numberOfRows; row++ )
-				{
-					cells[ col, row ] = new ExtraCell();
-				}
+                for( row = 1; row < NumberOfRows; row++ )
+                {
+                    Cells[ col, row ] = new ExtraCell();
+                }
 
-				col++;
-			}
+                col++;
+            }
 
 			// Add the extra rows.
-			row = numberOfRows - extraRows.Length;
-			for( int extra = 0; extra < extraRows.Length; extra++ )
-			{
-				cells[ 0, row ] = extraRows[ extra ];
+			row = NumberOfRows - ExtraRows.Length;
+			foreach (var t in ExtraRows)
+            {
+                Cells[ 0, row ] = t;
 				
-				for( col = 1; col < numberOfColumns; col++ )
-				{
-					cells[ col, row ] = new ExtraCell();
-				}
+                for( col = 1; col < NumberOfColumns; col++ )
+                {
+                    Cells[ col, row ] = new ExtraCell();
+                }
 
-				row++;
-			}
+                row++;
+            }
 		}
 
 		/// <summary>
@@ -480,28 +381,18 @@ namespace YearChart.Model
 		/// <param name="month">The month number - 1 to 12.</param>
 		/// <returns>The internationalised name of the month, short or long.</returns>
 		private string GetMonthName( int month )
-		{
-			if( abbreviate )
-			{
-				return dateTimeInfo.GetAbbreviatedMonthName(month);
-			}
-			
-			return dateTimeInfo.GetMonthName( month );
-		}
+        {
+            return Abbreviate ? dateTimeInfo.GetAbbreviatedMonthName(month) : dateTimeInfo.GetMonthName( month );
+        }
 
 		/// <summary>
 		/// Returns the internationalised name of the weekday dependent on the setting of the 'Abbreviate' flag.
 		/// </summary>
-		/// <param name="month">The weekday number - 1 to 7.</param>
+		/// <param name="day">The weekday number - 1 to 7.</param>
 		/// <returns>The internationalised name of the weekday, short or long.</returns>
 		private string GetDayName( DayOfWeek day )
-		{
-			if( abbreviate )
-			{
-				return dateTimeInfo.GetAbbreviatedDayName( day );
-			}
-			
-			return dateTimeInfo.GetDayName( day );
-		}
+        {
+            return Abbreviate ? dateTimeInfo.GetAbbreviatedDayName( day ) : dateTimeInfo.GetDayName( day );
+        }
 	}
 }
